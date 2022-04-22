@@ -1,7 +1,8 @@
-package StudentSys;
+//package StudentSys;
 
-public class PendingState implements StudentState{
+public class PendingState implements StudentState {
     Student student;
+
     @Override
     public void state() {
         System.out.println("You are now in pending!");
@@ -9,7 +10,7 @@ public class PendingState implements StudentState{
     }
 
     @Override
-    public void setStudent(Student student){
+    public void setStudent(Student student) {
         this.student = student;
     }
 
@@ -18,7 +19,7 @@ public class PendingState implements StudentState{
         return this.student;
     }
 
-    public void pay(){
+    public void pay() {
         System.out.println("you are done paying!");
         this.getStudent().setStudentState(new RegisteredState());
 

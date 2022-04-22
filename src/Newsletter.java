@@ -1,19 +1,20 @@
-package StudentSys;
+//package StudentSys;
 
 import java.util.ArrayList;
 
 public class Newsletter {
     private String content;
     private ArrayList<Student> subscribers = new ArrayList<Student>();
-    public Newsletter(String content){
+
+    public Newsletter(String content) {
         this.content = content;
     }
 
-    public void addSubscriber(Student student){
+    public void addSubscriber(Student student) {
         subscribers.add(student);
     }
 
-    public void removeSubscriber(Student student){
+    public void removeSubscriber(Student student) {
         subscribers.remove(student);
     }
 
@@ -21,14 +22,14 @@ public class Newsletter {
         return subscribers;
     }
 
-    public void newsLetterUpdate(String n){
+    public void newsLetterUpdate(String n) {
         content = n;
         notifyAllSubscribers();
 
     }
 
-    public void notifyAllSubscribers(){
-        for (Student student:subscribers){
+    public void notifyAllSubscribers() {
+        for (Student student : subscribers) {
             System.out.println(content);
             student.newsLetterUpdata();
         }

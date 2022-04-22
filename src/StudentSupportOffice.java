@@ -1,22 +1,22 @@
-package StudentSys;
+//package StudentSys;
 
 import java.util.ArrayList;
 
-public class StudentSupportOffice extends OfficeDecorator{
+public class StudentSupportOffice extends OfficeDecorator {
     private ArrayList<Student> students = new ArrayList<Student>();
 
-    public StudentSupportOffice(Office decoratedOffice){
+    public StudentSupportOffice(Office decoratedOffice) {
 
         super(decoratedOffice);
     }
 
     @Override
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         students.add(student);
     }
 
     @Override
-    public void removeStudent(Student student){
+    public void removeStudent(Student student) {
         students.remove(student);
     }
 
@@ -26,12 +26,13 @@ public class StudentSupportOffice extends OfficeDecorator{
 
     }
 
-    public void removeCourse(Student student,Course course){
+    public void removeCourse(Student student, Course course) {
         student.removeCourse(course);
         course.removeStudent(student);
 
     }
-    public void addCourse(Student student, Course course){
+
+    public void addCourse(Student student, Course course) {
 
         student.addCourse(course);
         course.addStudent(student);

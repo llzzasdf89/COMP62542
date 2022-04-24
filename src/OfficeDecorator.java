@@ -1,4 +1,3 @@
-//package StudentSys;
 
 public abstract class OfficeDecorator implements Office {
 

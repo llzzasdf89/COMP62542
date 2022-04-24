@@ -1,4 +1,3 @@
-//package StudentSys;
 
 public interface StudentState {
     Student student = null;

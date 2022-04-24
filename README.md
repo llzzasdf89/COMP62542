@@ -68,9 +68,19 @@ waiting for Zhi Li's authentication.
 ### compile
 Make sure JVM 10.0 or higher is prepared.
 ```
-javac src/*.java -d ./
-java StudentSys.Run
+javac src/*.java -d ./StudentSys;
+cd StudentSys;
+java Run;
 ```
 
+### Paths
+
+```
+.
+├── README.md
+├── designdoc //contains the documents of each design pattern. 
+└── src //contains the source code of backend
+
+```
 ### Other issues:
 The development process could be tracked in the **_project_** page, remeber to check that before development ;

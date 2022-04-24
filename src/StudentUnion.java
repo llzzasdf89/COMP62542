@@ -1,5 +1,3 @@
-//package StudentSys;
-
 import java.util.ArrayList;
 
 public class StudentUnion {

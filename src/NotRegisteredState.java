@@ -1,4 +1,3 @@
-//package StudentSys;
 
 public class NotRegisteredState implements StudentState {
 

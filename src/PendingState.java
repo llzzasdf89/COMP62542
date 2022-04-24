@@ -1,4 +1,3 @@
-//package StudentSys;
 
 public class PendingState implements StudentState {
     Student student;

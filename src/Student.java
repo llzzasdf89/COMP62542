@@ -1,8 +1,7 @@
-//package StudentSys;
 
 import java.util.ArrayList;
 
-public class Student {
+public class Student implements CourseVisitor{
 
     private long uniNum;
 
@@ -82,5 +81,47 @@ public class Student {
     public void reminderNotice(String reminder) {
         System.out.println(reminder);
 
+    }
+
+    @Override
+    public void visitManCourse(Course ManCourse) {
+        /**
+         * Since students in any status are not able to access ManCourse,
+         * therefore in this method we only output some warnings and do nothing at all.
+         */
+        System.out.println("Course Accessed by Student Support Office");
+        System.out.println("You are not able to access Mandatory Course");
+    }
+
+    @Override
+    public void visitOptCourse(Course OptCourse) {
+        /**
+         * Since students only in fully registered Status could access OptCourse,
+         * and they could add OptCourse or Remove OptCourse.
+         * Therefore, in this method, we need to judge the status first, and then add course or remove course according to the request
+         */
+        System.out.println("Course Accessed by Student");
+        if(this.studentState instanceof NotRegisteredState || this.studentState instanceof PendingState){
+            System.out.println("Now you are currently in not Fully Registerd state, so you are not able to modify your Courses");
+            return ;
+        } //if the student is not fully registered, directly return.
+        /**
+         * Else we just print out the optional Courses for the student to choose
+         */
+        ArrayList <OptCourse> OptCourseList = new ArrayList<OptCourse>();
+        for(Course c : this.courses){
+            if(c instanceof OptCourse) OptCourseList.add((OptCourse)c);
+        }
+        System.out.println("Now your Optional Courses are : " + OptCourseList);
+        /**
+         * The remain business logic are 
+         * 1.accept input from user
+         * 2.Decide to add the course or remove the course..etc.
+         * Since we did not determine the input way, either through command line or UI, so here I just comment them.
+         * Scanner input = new Scanner(System.in);
+         * if(input === 1 ) OptCourseList.add(OptCourse)
+         * else (input === 2) OptCourseList.remove(OptCourse)
+         * ...
+         */
     }
 }

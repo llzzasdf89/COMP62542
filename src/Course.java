@@ -1,8 +1,10 @@
-//package StudentSys;
-
 import java.util.ArrayList;
-
-public class Course {
+/**
+ * After adding Visitor Pattern, Course needs to be modified to abstract classes;
+ * This is because it needs to be abstracted as 'Element', and then define the common method of Element, 'accept'
+ * As for related concept about Visitor Pattern, please refer the document 'VisitorPatternLog'
+ */
+public abstract class Course {
     private String courseNum;
     private String name;
     private String department;
@@ -77,5 +79,5 @@ public class Course {
     public ArrayList<Course> getSubActivities() {
         return this.subActivities;
     }
-
+    abstract void accept(CourseVisitor Visitor);
 }

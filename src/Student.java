@@ -45,14 +45,8 @@ public class Student implements CourseVisitor{
         this.studentState.state();
     }
 
-    public void removeCourse(Course course) {
-        courses.remove(course);
-        course.removeStudent(this);
-    }
-
-    public void addCourse(Course course) {
-        courses.add(course);
-        course.addStudent(this);
+    public void selectCourse(Course course){
+        
     }
 
     public void subscribeNewsletter(Newsletter newsletter) {
@@ -89,7 +83,7 @@ public class Student implements CourseVisitor{
          * Since students in any status are not able to access ManCourse,
          * therefore in this method we only output some warnings and do nothing at all.
          */
-        System.out.println("Course Accessed by Student Support Office");
+        System.out.println("Mandatory Course Accessed by Student");
         System.out.println("You are not able to access Mandatory Course");
     }
 
@@ -100,7 +94,7 @@ public class Student implements CourseVisitor{
          * and they could add OptCourse or Remove OptCourse.
          * Therefore, in this method, we need to judge the status first, and then add course or remove course according to the request
          */
-        System.out.println("Course Accessed by Student");
+        System.out.println("Optional Course Accessed by Student");
         if(this.studentState instanceof NotRegisteredState || this.studentState instanceof PendingState){
             System.out.println("Now you are currently in not Fully Registerd state, so you are not able to modify your Courses");
             return ;
@@ -123,5 +117,9 @@ public class Student implements CourseVisitor{
          * else (input === 2) OptCourseList.remove(OptCourse)
          * ...
          */
+        this.selectCourse(OptCourse);
+    }
+    public void accept(StudentVisitor visitor,Course course,String request){
+        visitor.visitStudent(this,course,"add");
     }
 }

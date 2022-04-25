@@ -30,14 +30,11 @@ public abstract class OfficeDecorator implements Office {
     }
 
     public void removeCourse(Student student, Course course) {
-        student.removeCourse(course);
         course.removeStudent(student);
 
     }
 
     public void addCourse(Student student, Course course) {
-
-        student.addCourse(course);
         course.addStudent(student);
     }
 }

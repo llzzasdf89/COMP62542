@@ -1,5 +1,17 @@
 import java.util.ArrayList;
-public class StudentSupportOffice extends OfficeDecorator implements StudentVisitor{
+
+public class StudentSupportOffice extends OfficeDecorator implements StudentVisitor {
+    private static StudentSupportOffice instance;
+
+    public static synchronized StudentSupportOffice createInstance() {
+        if (instance == null) {
+            StudentAdmissionsOffice stu = StudentAdmissionsOffice.createInstance();
+            instance = new StudentSupportOffice(stu);
+        }
+
+        return instance;
+    }
+
     private ArrayList<Student> students = new ArrayList<Student>();
     
     public StudentSupportOffice(Office decoratedOffice) {

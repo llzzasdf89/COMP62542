@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 /**
  * After adding Visitor Pattern, Course needs to be modified to abstract classes;
  * This is because it needs to be abstracted as 'Element', and then define the common method of Element, 'accept'
@@ -11,20 +12,18 @@ import java.util.ArrayList;
 public abstract class Course {
     private String courseNum;
     private String name;
-    private String department;
 
     enum Time {
         Mon, Tue, Wed, Thu, Fri
     }
 
-    private Time time;
+    private Course.Time time;
     private ArrayList<Course> subActivities = new ArrayList<Course>();
     private ArrayList<Student> students = new ArrayList<Student>();
 
-    public Course(String courseNum, String name, String department, Time time) {
+    public Course(String courseNum, String name, Course.Time time) {
         this.courseNum = courseNum;
         this.name = name;
-        this.department = department;
         this.time = time;
     }
     abstract void initateCourse(); //template method, needs to be override by ManCourse and OptCourse
@@ -42,14 +41,6 @@ public abstract class Course {
 
     public String getName() {
         return name;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getDepartment() {
-        return department;
     }
 
     public void setTime(Time time) {
@@ -83,5 +74,6 @@ public abstract class Course {
     public ArrayList<Course> getSubActivities() {
         return this.subActivities;
     }
+
     abstract void accept(CourseVisitor Visitor);
 }

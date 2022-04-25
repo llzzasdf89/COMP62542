@@ -1,7 +1,18 @@
 
 import java.util.ArrayList;
 
-public class StudentAdmissionsOffice implements Office,StudentVisitor {
+public class StudentAdmissionsOffice implements Office, StudentVisitor {
+    private static StudentAdmissionsOffice instance;
+
+    private StudentAdmissionsOffice() {
+    }
+
+    public static synchronized StudentAdmissionsOffice createInstance() {
+        if (instance == null)
+            instance = new StudentAdmissionsOffice();
+        return instance;
+    }
+
     private ArrayList<Student> students = new ArrayList<Student>();
     @Override
     public void addStudent(Student student) {

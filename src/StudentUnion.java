@@ -2,10 +2,18 @@ import java.util.ArrayList;
 
 public class StudentUnion {
 
-    private ArrayList<Newsletter> newsletters = new ArrayList<Newsletter>();
+    private static StudentUnion instance;
 
-    public StudentUnion() {
+    private StudentUnion() {
     }
+
+    public static synchronized StudentUnion createInstance() {
+        if (instance == null)
+            instance = new StudentUnion();
+        return instance;
+    }
+
+    private ArrayList<Newsletter> newsletters = new ArrayList<Newsletter>();
 
     public void addNewsletter(Newsletter newsletter) {
         newsletters.add(newsletter);

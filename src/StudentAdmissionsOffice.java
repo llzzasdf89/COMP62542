@@ -7,7 +7,7 @@ public class StudentAdmissionsOffice implements Office, CourseVisitor {
     private StudentAdmissionsOffice() {
     }
 
-    public static StudentAdmissionsOffice getInstance() {
+    public static synchronized StudentAdmissionsOffice createInstance() {
         if (instance == null)
             instance = new StudentAdmissionsOffice();
         return instance;

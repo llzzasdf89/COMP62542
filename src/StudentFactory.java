@@ -1,5 +1,5 @@
 public class StudentFactory {
-    public static Student getStudent(long uniNum) {
+    public static Student createStudent(long uniNum) {
         return new Student(uniNum);
     }
 }

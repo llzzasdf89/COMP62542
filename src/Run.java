@@ -13,13 +13,13 @@ public class Run {
         Course course1 = new ManCourse("aaa", "se1", null);
         // Course course2 = new OptCourse("bbb", "se2", null, null);
         // Test for Factory pattern
-        Course course2 = CourseFactory.getCourse("optcourse", "bbb", "se2", null, null);
+        Course course2 = CourseFactory.createCourse("optcourse", "bbb", "se2", null, null);
         Student student1 = new Student(222);
         student1.state();
         student1.state();
         student1.state();
         // Test for Factory pattern
-        Student student2 = StudentFactory.getStudent(333);
+        Student student2 = StudentFactory.createStudent(333);
         student2.state();
         student2.state();
 
@@ -41,15 +41,15 @@ public class Run {
 
         student1.subscribeNewsletter(newsletter2);
         System.out.println("2   " + student1.getNewsletters());
-
-        StudentUnion studentUnion = new StudentUnion();
+        // Test for Singleton pattern
+        StudentUnion studentUnion = StudentUnion.createInstance();
         studentUnion.updateNewsletter(newsletter1, "n111");
 
         // Test for Singleton pattern
-        StudentAdmissionsOffice studentAdmissionOffice = StudentAdmissionsOffice.getInstance();
+        StudentAdmissionsOffice studentAdmissionOffice = StudentAdmissionsOffice.createInstance();
         studentAdmissionOffice.sendReminder(student, "r1");
-
-        StudentSupportOffice studentSupportOffice = new StudentSupportOffice(StudentAdmissionsOffice.getInstance());
+        // Test for Singleton pattern
+        StudentSupportOffice studentSupportOffice = StudentSupportOffice.createInstance();
         studentSupportOffice.addCourse(student1, course2);
         System.out.println("s2   " + student1.getCourse());
         // Test for Visitor Pattern

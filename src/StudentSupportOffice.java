@@ -3,6 +3,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StudentSupportOffice extends OfficeDecorator implements CourseVisitor {
+    private static StudentSupportOffice instance;
+
+    public static synchronized StudentSupportOffice createInstance() {
+        if (instance == null) {
+            StudentAdmissionsOffice stu = StudentAdmissionsOffice.createInstance();
+            instance = new StudentSupportOffice(stu);
+        }
+
+        return instance;
+    }
+
     private ArrayList<Student> students = new ArrayList<Student>();
 
     public StudentSupportOffice(Office decoratedOffice) {

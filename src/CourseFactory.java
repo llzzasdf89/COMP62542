@@ -1,7 +1,7 @@
 //import Course.Time;
 public class CourseFactory {
 
-    public static Course getCourse(String courseType, String courseNum, String name, String department,
+    public static Course createCourse(String courseType, String courseNum, String name, String department,
             Course.Time time) {
         if (courseType == null)
             return null;

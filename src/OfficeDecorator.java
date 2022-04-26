@@ -23,9 +23,9 @@ public abstract class OfficeDecorator implements Office {
     }
 
     @Override
-    public void sendReminder(Student student, String reminder) {
+    public void sendReminder(String reminder) {
 
-        decoratorOffice.sendReminder(student, reminder);
+        decoratorOffice.sendReminder(reminder);
 
     }
 

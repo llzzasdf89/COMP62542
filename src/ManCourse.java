@@ -7,7 +7,7 @@ public class ManCourse extends Course {
     @Override
     void initateCourse() {
         System.out.println("Beginning initating Mandatory Course");
-        String output = String.format("Course number:%s\nCourse Name:%s\nCourse Department:%s",super.getCourseNum(),super.getName(),super.getDepartment());
+        String output = String.format("Course number:%s\nCourse Name:%s",super.getCourseNum(),super.getName());
         System.out.println(output);
         System.out.println("Initiation finished");
     }

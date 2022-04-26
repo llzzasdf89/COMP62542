@@ -46,7 +46,21 @@ public class Student implements CourseVisitor{
     }
 
     public void selectCourse(Course course){
-        
+        /**
+         * The overall logic of this function is 
+         * 1.judge whether the course selected by student is Optional Course
+         * 2.Then we judge whether his state is registered. 
+         * 3.If both satisfies, let the Support Office to add course for him.
+         */
+        if(!(course instanceof OptCourse)) {
+            System.out.println("You can not select Mandatory Courses");
+            return;
+        }
+        else if (!(this.studentState instanceof RegisteredState) ){
+            System.out.println("You are not able to select course because you are not registered");
+            return;
+        }
+        this.accept(StudentSupportOffice.createInstance(), course, "add");
     }
 
     public void subscribeNewsletter(Newsletter newsletter) {
@@ -107,19 +121,9 @@ public class Student implements CourseVisitor{
             if(c instanceof OptCourse) OptCourseList.add((OptCourse)c);
         }
         System.out.println("Now your Optional Courses are : " + OptCourseList);
-        /**
-         * The remain business logic are 
-         * 1.accept input from user
-         * 2.Decide to add the course or remove the course..etc.
-         * Since we did not determine the input way, either through command line or UI, so here I just comment them.
-         * Scanner input = new Scanner(System.in);
-         * if(input === 1 ) OptCourseList.add(OptCourse)
-         * else (input === 2) OptCourseList.remove(OptCourse)
-         * ...
-         */
         this.selectCourse(OptCourse);
     }
     public void accept(StudentVisitor visitor,Course course,String request){
-        visitor.visitStudent(this,course,"add");
+        visitor.visitStudent(this,course,request);
     }
 }

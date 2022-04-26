@@ -15,7 +15,14 @@ public class OptCourse extends Course {
     }
 
     @Override
-    void accept(CourseVisitor Visitor) {
+    void initateCourse() {//'template' method in the template pattern
+        System.out.println("Beginning initating Optional Course");
+        String output = String.format("Course number:%s\nCourse Name:%s",super.getCourseNum(),super.getName());
+        System.out.println(output);
+        System.out.println("Initiation finished");
+    }
+    @Override
+    void accept(CourseVisitor Visitor) {//'accept' method in the visitor pattern
         /**
          * As the element to be accessed by Visitor,
          * the major aim of Visitor is to invocate the VisitXXXElement method,

@@ -1,9 +1,7 @@
 
-import java.util.ArrayList;
 
-public class StudentAdmissionsOffice implements Office, CourseVisitor {
+public class StudentAdmissionsOffice implements Office, StudentVisitor {
     private static StudentAdmissionsOffice instance;
-
     private StudentAdmissionsOffice() {
     }
 
@@ -12,44 +10,33 @@ public class StudentAdmissionsOffice implements Office, CourseVisitor {
             instance = new StudentAdmissionsOffice();
         return instance;
     }
-
-    private ArrayList<Student> students = new ArrayList<Student>();
-
     @Override
     public void addStudent(Student student) {
-        students.add(student);
+        Data data = Data.getDataInstance();
+        data.getStudentIterator().add(student); //use iterator pattern to add a new student to the list
     }
 
     @Override
     public void removeStudent(Student student) {
-        students.remove(student);
+        Data data = Data.getDataInstance();
+        data.getStudentIterator().add(student); //use iterator pattern to add a new student to the list
     }
 
     @Override
-    public void sendReminder(Student student, String reminder) {
-        student.reminderNotice(reminder);
+    public void sendReminder(String reminder) {
+        Data data = Data.getDataInstance();
+        DataIterator studentlist = data.getStudentIterator();
+        while(studentlist.hasNext()){ //Find all the students which are registed. Send them reminder
+            Student student = (Student)studentlist.next();
+            if(student.getStudentState() instanceof RegisteredState) student.reminderNotice(reminder);
+        }
     }
 
     @Override
-    public void visitManCourse(Course ManCourse) {
-        /**
-         * Student AdmissionOffice does not have right to add Course or remove Course
-         * from a student
-         * Therefore, in the visit method, we directly return
-         */
-        System.out.println("Student Admission Office could not access students Course");
-        return;
+    public void visitStudent(Student student,Course course,String request) {
+        System.out.println("Admission Office is not able to visit student's courses");
     }
 
-    @Override
-    public void visitOptCourse(Course OptCourse) {
-        /**
-         * Student AdmissionOffice does not have right to add Course or remove Course
-         * from a student
-         * Therefore, in the visit method, we directly return
-         */
-        System.out.println("Student Admission Office could not access students Course");
-        return;
-    }
-
+    
+    
 }

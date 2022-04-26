@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
 /**
- * After adding Visitor Pattern, Course needs to be modified to abstract
- * classes;
- * This is because it needs to be abstracted as 'Element', and then define the
- * common method of Element, 'accept'
- * As for related concept about Visitor Pattern, please refer the document
- * 'VisitorPatternLog'
+ * After adding Visitor Pattern, Course needs to be modified to abstract classes;
+ * This is because it needs to be abstracted as 'Element', and then define the common method of Element, 'accept'
+ * As for related concept about Visitor Pattern, please refer the document 'VisitorPatternLog'
+ * 
+ * 
+ * Course is also a 'template' for ManCourse and OptCourse;
+ * In this template, the template method is initateCourse, Mancourse and OptCourse needs to override it
  */
 public abstract class Course {
     private String courseNum;
@@ -25,7 +26,7 @@ public abstract class Course {
         this.name = name;
         this.time = time;
     }
-
+    abstract void initateCourse(); //template method, needs to be override by ManCourse and OptCourse
     public void setCourseNum(String courseNum) {
         this.courseNum = courseNum;
     }

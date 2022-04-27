@@ -66,8 +66,21 @@ waiting for Zhi Li's authentication.
 ```
 
 ### compile
-Make sure JVM 10.0 or higher is prepared.
+frontend:<br/>
+Make sure nodejs 13 or higher is prepared.<br/>
 ```
+cd frontend;
+npm install;
+npm run start;
+Browser visit http://localhost:3000/
+```
+<br/>
+backend:
+<br/>
+Make sure JVM 10.0 or higher is prepared.
+
+```
+cd backend;
 javac src/*.java -d ./StudentSys;
 cd StudentSys;
 java Run;
@@ -77,9 +90,14 @@ java Run;
 
 ```
 .
-├── README.md
-├── designdoc //contains the documents of each design pattern. 
-└── src //contains the source code of backend
+├── backend         //contains all the documents relevant to backend
+│   ├── designdoc   //design patterns documents
+│   └── src         //source code of backend
+└── frontend        //contains all the documents relevant to frontend
+    ├── public      //static files of frontend
+    └── src         //source code of frontend
+        └── Login   //Login page
+
 
 ```
 ### Other issues:

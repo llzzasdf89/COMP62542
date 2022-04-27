@@ -1,0 +1,28 @@
+@import '~antd/dist/antd.css';
+
+.layout{
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginContainer{
+    width:400px;
+    height:300px;
+    border:1px solid red;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding:30px;
+    flex-direction: column;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+.loginInput{
+    border-radius: 20px;
+    text-align:center;
+}

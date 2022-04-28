@@ -1,21 +1,23 @@
 
 public class Run {
     public static void main(String[] args) {
-        //Test for iterator pattern
+        // Test for iterator pattern
         StudentSupportOffice stuSup = StudentSupportOffice.createInstance();
-        Data data = Data.getDataInstance(); //Data is singleton class, through the method getDataInstance to get it.
-        //Remember, data contains all the students and courses.
+        Data data = Data.getDataInstance(); // Data is singleton class, through the method getDataInstance to get it.
+        // Remember, data contains all the students and courses.
         DataIterator CourseIterator = data.getCourseIterator();
         DataIterator StudentIterator = data.getStudentIterator();
-        while(StudentIterator.hasNext()){
-            Student student = (Student)StudentIterator.next();
-            while(CourseIterator.hasNext()){
-                Course course = (Course)CourseIterator.next();
-                if(course instanceof ManCourse) stuSup.addCourse(student, course);
+        while (StudentIterator.hasNext()) {
+            Student student = (Student) StudentIterator.next();
+            while (CourseIterator.hasNext()) {
+                Course course = (Course) CourseIterator.next();
+                if (course instanceof ManCourse)
+                    stuSup.addCourse(student, course);
             }
             CourseIterator = data.getCourseIterator();
             System.out.println("Student id: " + student.getUniNum());
             System.out.println("Student Courses : " + student.getCourse());
+            student.selectCourse(new NotRegisteredStrategy(), new OptCourse("10", "ManCourse10", null, null));
         }
     }
 }

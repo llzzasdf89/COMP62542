@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 
-public class Student implements CourseVisitor{
+public class Student implements CourseVisitor {
 
     private long uniNum;
 
@@ -45,28 +45,28 @@ public class Student implements CourseVisitor{
         this.studentState.state();
     }
 
-    public void selectCourse(Course course){
+    public void selectCourse(SelectCourseStrategy selectStrategy, Course course) {
         /**
-         * The overall logic of this function is 
+         * The overall logic of this function is
          * 1.judge whether the course selected by student is Optional Course
-         * 2.Then we judge whether his state is registered. 
+         * 2.Then we judge whether his state is registered.
          * 3.If both satisfies, let the Support Office to add course for him.
          */
-        if(!(course instanceof OptCourse)) {
-            System.out.println("You can not select Mandatory Courses");
-            return;
-        }
-        else if (!(this.studentState instanceof RegisteredState) ){
-            System.out.println("You are not able to select course because you are not registered");
-            return;
-        }
-        this.accept(StudentSupportOffice.createInstance(), course, "add");
+        // if (!(course instanceof OptCourse)) {
+        // System.out.println("You can not select Mandatory Courses");
+        // return;
+        // } else if (!(this.studentState instanceof RegisteredState)) {
+        // System.out.println("You are not able to select course because you are not
+        // registered");
+        // return;
+        // }
+        // this.accept(StudentSupportOffice.createInstance(), course, "add");
+        selectStrategy.selectCourse(course);
     }
 
     public void subscribeNewsletter(Newsletter newsletter) {
         newsletters.add(newsletter);
         newsletter.addSubscriber(this);
-
     }
 
     public ArrayList<Newsletter> getNewsletters() {
@@ -106,24 +106,28 @@ public class Student implements CourseVisitor{
         /**
          * Since students only in fully registered Status could access OptCourse,
          * and they could add OptCourse or Remove OptCourse.
-         * Therefore, in this method, we need to judge the status first, and then add course or remove course according to the request
+         * Therefore, in this method, we need to judge the status first, and then add
+         * course or remove course according to the request
          */
         System.out.println("Optional Course Accessed by Student");
-        if(this.studentState instanceof NotRegisteredState || this.studentState instanceof PendingState){
-            System.out.println("Now you are currently in not Fully Registerd state, so you are not able to modify your Courses");
-            return ;
-        } //if the student is not fully registered, directly return.
+        if (this.studentState instanceof NotRegisteredState || this.studentState instanceof PendingState) {
+            System.out.println(
+                    "Now you are currently in not Fully Registerd state, so you are not able to modify your Courses");
+            return;
+        } // if the student is not fully registered, directly return.
         /**
          * Else we just print out the optional Courses for the student to choose
          */
-        ArrayList <OptCourse> OptCourseList = new ArrayList<OptCourse>();
-        for(Course c : this.courses){
-            if(c instanceof OptCourse) OptCourseList.add((OptCourse)c);
+        ArrayList<OptCourse> OptCourseList = new ArrayList<OptCourse>();
+        for (Course c : this.courses) {
+            if (c instanceof OptCourse)
+                OptCourseList.add((OptCourse) c);
         }
         System.out.println("Now your Optional Courses are : " + OptCourseList);
-        this.selectCourse(OptCourse);
+        this.selectCourse(new OptCourseStrategy(), OptCourse);
     }
-    public void accept(StudentVisitor visitor,Course course,String request){
-        visitor.visitStudent(this,course,request);
-    }
+
+    // public void accept(StudentVisitor visitor, Course course, String request) {
+    // visitor.visitStudent(this, course, request);
+    // }
 }

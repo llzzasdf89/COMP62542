@@ -1,7 +1,7 @@
 
 import java.util.ArrayList;
 
-public class Student implements CourseVisitor{
+public class Student implements CourseVisitor {
 
     private long uniNum;
 
@@ -12,6 +12,8 @@ public class Student implements CourseVisitor{
     private ArrayList<Newsletter> newsletters = new ArrayList<Newsletter>();
 
     private ArrayList<String> reminders = new ArrayList<String>();
+
+    private SelectCourseStrategy selectCourseStrategy;
 
     public void setUniNum(long uniNum) {
         this.uniNum = uniNum;
@@ -45,28 +47,18 @@ public class Student implements CourseVisitor{
         this.studentState.state();
     }
 
-    public void selectCourse(Course course){
-        /**
-         * The overall logic of this function is 
-         * 1.judge whether the course selected by student is Optional Course
-         * 2.Then we judge whether his state is registered. 
-         * 3.If both satisfies, let the Support Office to add course for him.
-         */
-        if(!(course instanceof OptCourse)) {
-            System.out.println("You can not select Mandatory Courses");
-            return;
-        }
-        else if (!(this.studentState instanceof RegisteredState) ){
-            System.out.println("You are not able to select course because you are not registered");
-            return;
-        }
-        this.accept(StudentSupportOffice.createInstance(), course, "add");
+    public void setSelectCourseStrategy(SelectCourseStrategy selectCourseStrategy) {
+        this.selectCourseStrategy = selectCourseStrategy;
+    }
+    public void selectCourse(Course course) {
+        //select course through visitor and strategy pattern combination
+        if (course instanceof ManCourse) this.visitManCourse(course);
+        else this.visitOptCourse(course);
     }
 
     public void subscribeNewsletter(Newsletter newsletter) {
         newsletters.add(newsletter);
         newsletter.addSubscriber(this);
-
     }
 
     public ArrayList<Newsletter> getNewsletters() {
@@ -93,37 +85,17 @@ public class Student implements CourseVisitor{
 
     @Override
     public void visitManCourse(Course ManCourse) {
-        /**
-         * Since students in any status are not able to access ManCourse,
-         * therefore in this method we only output some warnings and do nothing at all.
-         */
-        System.out.println("Mandatory Course Accessed by Student");
-        System.out.println("You are not able to access Mandatory Course");
+        this.setSelectCourseStrategy(new ManCourseStrategy());
+        this.selectCourseStrategy.executeStrategy(this, ManCourse);
     }
 
     @Override
     public void visitOptCourse(Course OptCourse) {
-        /**
-         * Since students only in fully registered Status could access OptCourse,
-         * and they could add OptCourse or Remove OptCourse.
-         * Therefore, in this method, we need to judge the status first, and then add course or remove course according to the request
-         */
-        System.out.println("Optional Course Accessed by Student");
-        if(this.studentState instanceof NotRegisteredState || this.studentState instanceof PendingState){
-            System.out.println("Now you are currently in not Fully Registerd state, so you are not able to modify your Courses");
-            return ;
-        } //if the student is not fully registered, directly return.
-        /**
-         * Else we just print out the optional Courses for the student to choose
-         */
-        ArrayList <OptCourse> OptCourseList = new ArrayList<OptCourse>();
-        for(Course c : this.courses){
-            if(c instanceof OptCourse) OptCourseList.add((OptCourse)c);
-        }
-        System.out.println("Now your Optional Courses are : " + OptCourseList);
-        this.selectCourse(OptCourse);
+        this.setSelectCourseStrategy(new OptCourseStrategy());
+        this.selectCourseStrategy.executeStrategy(this, OptCourse);
     }
-    public void accept(StudentVisitor visitor,Course course,String request){
-        visitor.visitStudent(this,course,request);
+
+    public void accept(StudentVisitor visitor, Course course, String request) {
+    visitor.visitStudent(this, course, request);
     }
 }

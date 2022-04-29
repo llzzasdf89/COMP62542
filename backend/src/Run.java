@@ -18,8 +18,10 @@ public class Run {
             System.out.println("Student id: " + student.getUniNum());
             System.out.println("Student Courses : " + student.getCourse());
             // Test for Strategy Pattern
-            Context context = new Context(new ManCourseStrategy());
-            context.executeStrategy(new ManCourse("10", "ManCourse10", null));
+            student.setSelectCourseStrategy(new ManCourseStrategy());
+            student.executeStrategy(new ManCourse("10", "ManCourse10", null));
+            student.setSelectCourseStrategy(new OptCourseStrategy());
+            student.executeStrategy(new OptCourse("11", "OptCourse11", null, null));
         }
     }
 }

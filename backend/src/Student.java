@@ -13,6 +13,8 @@ public class Student implements CourseVisitor {
 
     private ArrayList<String> reminders = new ArrayList<String>();
 
+    private SelectCourseStrategy selectCourseStrategy;
+
     public void setUniNum(long uniNum) {
         this.uniNum = uniNum;
     }
@@ -45,6 +47,14 @@ public class Student implements CourseVisitor {
         this.studentState.state();
     }
 
+    public void setSelectCourseStrategy(SelectCourseStrategy selectCourseStrategy) {
+        this.selectCourseStrategy = selectCourseStrategy;
+    }
+
+    public SelectCourseStrategy getSelectCourseStrategy() {
+        return selectCourseStrategy;
+    }
+
     // public void selectCourse(SelectCourseStrategy selectStrategy, Course course)
     // {
     // /**
@@ -63,6 +73,10 @@ public class Student implements CourseVisitor {
     // }
     // this.accept(StudentSupportOffice.createInstance(), course, "add");
     // }
+
+    public void executeStrategy(Course course) {
+        selectCourseStrategy.selectCourse(course);
+    }
 
     public void subscribeNewsletter(Newsletter newsletter) {
         newsletters.add(newsletter);
@@ -103,7 +117,7 @@ public class Student implements CourseVisitor {
 
     @Override
     public void visitOptCourse(Course OptCourse) {
-        Context context = new Context(new OptCourseStrategy());
+        this.setSelectCourseStrategy(new OptCourseStrategy());
         /**
          * Since students only in fully registered Status could access OptCourse,
          * and they could add OptCourse or Remove OptCourse.
@@ -126,7 +140,7 @@ public class Student implements CourseVisitor {
         }
         System.out.println("Now your Optional Courses are : " + OptCourseList);
         // this.selectCourse(OptCourse);
-        context.executeStrategy(OptCourse);
+        this.executeStrategy(OptCourse);
     }
 
     // public void accept(StudentVisitor visitor, Course course, String request) {

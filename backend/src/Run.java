@@ -19,9 +19,9 @@ public class Run {
             System.out.println("Student Courses : " + student.getCourse());
             // Test for Strategy Pattern
             student.setSelectCourseStrategy(new ManCourseStrategy());
-            student.executeStrategy(new ManCourse("10", "ManCourse10", null));
+            student.selectCourse(new ManCourse("10", "ManCourse10", null));
             student.setSelectCourseStrategy(new OptCourseStrategy());
-            student.executeStrategy(new OptCourse("11", "OptCourse11", null, null));
+            student.selectCourse(new OptCourse("11", "OptCourse11", null, null));
         }
     }
 }

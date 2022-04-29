@@ -1,3 +1,3 @@
 public interface SelectCourseStrategy {
-    public void selectCourse(Course course);
+    public void executeStrategy(Course course);
 }

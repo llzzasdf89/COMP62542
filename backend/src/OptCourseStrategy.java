@@ -7,7 +7,7 @@ public class OptCourseStrategy implements SelectCourseStrategy {
     }
 
     @Override
-    public void selectCourse(Course course) {
+    public void executeStrategy(Course course) {
         /**
          * State is registered and course belongs to OptCourse, let the Support Office
          * to add course for him

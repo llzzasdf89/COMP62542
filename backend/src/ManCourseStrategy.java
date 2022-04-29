@@ -1,4 +1,3 @@
-
 public class ManCourseStrategy implements SelectCourseStrategy {
     @Override
     public void selectCourse(Course course) {

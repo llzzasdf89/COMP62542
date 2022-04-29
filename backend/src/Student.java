@@ -45,24 +45,24 @@ public class Student implements CourseVisitor {
         this.studentState.state();
     }
 
-    public void selectCourse(SelectCourseStrategy selectStrategy, Course course) {
-        /**
-         * The overall logic of this function is
-         * 1.judge whether the course selected by student is Optional Course
-         * 2.Then we judge whether his state is registered.
-         * 3.If both satisfies, let the Support Office to add course for him.
-         */
-        // if (!(course instanceof OptCourse)) {
-        // System.out.println("You can not select Mandatory Courses");
-        // return;
-        // } else if (!(this.studentState instanceof RegisteredState)) {
-        // System.out.println("You are not able to select course because you are not
-        // registered");
-        // return;
-        // }
-        // this.accept(StudentSupportOffice.createInstance(), course, "add");
-        selectStrategy.selectCourse(course);
-    }
+    // public void selectCourse(SelectCourseStrategy selectStrategy, Course course)
+    // {
+    // /**
+    // * The overall logic of this function is
+    // * 1.judge whether the course selected by student is Optional Course
+    // * 2.Then we judge whether his state is registered.
+    // * 3.If both satisfies, let the Support Office to add course for him.
+    // */
+    // if (!(course instanceof OptCourse)) {
+    // System.out.println("You can not select Mandatory Courses");
+    // return;
+    // } else if (!(this.studentState instanceof RegisteredState)) {
+    // System.out.println("You are not able to select course because you are not
+    // registered");
+    // return;
+    // }
+    // this.accept(StudentSupportOffice.createInstance(), course, "add");
+    // }
 
     public void subscribeNewsletter(Newsletter newsletter) {
         newsletters.add(newsletter);
@@ -103,6 +103,7 @@ public class Student implements CourseVisitor {
 
     @Override
     public void visitOptCourse(Course OptCourse) {
+        Context context = new Context(new OptCourseStrategy());
         /**
          * Since students only in fully registered Status could access OptCourse,
          * and they could add OptCourse or Remove OptCourse.
@@ -124,7 +125,8 @@ public class Student implements CourseVisitor {
                 OptCourseList.add((OptCourse) c);
         }
         System.out.println("Now your Optional Courses are : " + OptCourseList);
-        this.selectCourse(new OptCourseStrategy(), OptCourse);
+        // this.selectCourse(OptCourse);
+        context.executeStrategy(OptCourse);
     }
 
     // public void accept(StudentVisitor visitor, Course course, String request) {

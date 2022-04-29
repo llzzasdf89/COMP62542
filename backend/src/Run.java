@@ -17,7 +17,9 @@ public class Run {
             CourseIterator = data.getCourseIterator();
             System.out.println("Student id: " + student.getUniNum());
             System.out.println("Student Courses : " + student.getCourse());
-            student.selectCourse(new NotRegisteredStrategy(), new OptCourse("10", "ManCourse10", null, null));
+            // Test for Strategy Pattern
+            Context context = new Context(new ManCourseStrategy());
+            context.executeStrategy(new ManCourse("10", "ManCourse10", null));
         }
     }
 }

@@ -1,3 +1,3 @@
 public interface StudentVisitor {
-    abstract void visitStudent(Student student, Course course, String request);
+    abstract void visitStudent(Student student,Course course,String request);
 }

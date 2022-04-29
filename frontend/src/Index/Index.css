@@ -1,0 +1,19 @@
+.layoutContainer{
+    height:100vh;
+    overflow: hidden;
+}
+.contentContainer{
+    padding:0 50px;
+}
+.contentContainer-contentBox{
+    height:100%;
+    padding: 24px;
+    background: #fff
+}
+/* header-menu and ant-menu-item are CSS classes from ant-design framework*/
+.header-menu{
+    text-align: center;
+}
+.ant-menu-item {
+ flex-grow: 1;
+}

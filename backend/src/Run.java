@@ -7,6 +7,10 @@ public class Run {
         // Remember, data contains all the students and courses.
         DataIterator CourseIterator = data.getCourseIterator();
         DataIterator StudentIterator = data.getStudentIterator();
+        Newsletter newsletter1 = new Newsletter("aa");
+        StudentUnion s = new StudentUnion();
+        s.addNewsletter(newsletter1);
+        stuSup.deleteNewsletter(newsletter1);
         while (StudentIterator.hasNext()) {
             Student student = (Student) StudentIterator.next();
             while (CourseIterator.hasNext()) {

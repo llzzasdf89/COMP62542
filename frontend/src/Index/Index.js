@@ -4,7 +4,7 @@
  */
 import React, {Component } from 'react'
 import {Layout,Menu, Breadcrumb } from 'antd';
-import {Link,useLocation } from 'react-router-dom';
+import {Link,useLocation,Outlet} from 'react-router-dom';
 import './Index.css'
 const {Header,Content,Footer} = Layout
 //Define what the menu item contains 
@@ -27,7 +27,11 @@ menuItem.forEach((item,index)=>{
 class Index extends Component{
     constructor(props){
         super(props)
-        const pathname = props.location.pathname
+        //receive the input from Login component, including currentPath
+        const {location} = props
+        const {inputValue} = location.state || '10086' //default value, preventing the value is empty
+        const {pathname} = location
+        this.state = {studentID: inputValue} //bind it to the state object of React
         this.currentRoute =routeNameMap.get(pathname)
     }
     shouldComponentUpdate(nextProps){
@@ -48,14 +52,19 @@ class Index extends Component{
                 theme="dark"
                 mode="horizontal"
                 className='header-menu'
-                items={menuItem}/
+                items={menuItem}
+                defaultSelectedKeys = {[menuItem[0].key]}
+                /
                 >
             </Header>
             <Content className='contentContainer'>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item key={this.currentRoute}>{this.currentRoute}</Breadcrumb.Item>
                 </Breadcrumb>
-                <div className="contentContainer-contentBox">Content</div>
+                <div className="contentContainer-contentBox">
+                <Outlet context = {this.state}></Outlet> {/*Outlet is a placeholder for children component */}
+
+                </div>
             </Content>
             <Footer className='footerContainer'>COMP62542 Group Project by Group 8</Footer>
         </Layout>

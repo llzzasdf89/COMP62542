@@ -19,8 +19,9 @@ class Login extends Component {
                 content:<div><p>Please input a 8 digit number</p></div>
             })
         }
-        const {navigate} = this
-        navigate('/index',{replace:true})
+        this.setState({inputValue:input})
+        const {navigate,state} = this
+        navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
     }
     constructor(props){
         super(props)
@@ -59,11 +60,8 @@ class Login extends Component {
         return layout
     }
 }
-export default ()=>{
-    /**
-     * In react-router, useNavigate is a hook funciton, 
+export default ()=><Login navigate={useNavigate()}></Login>
+/**
+     * In react-router, useNavigate is a hook function, 
      *      if we wanna use it, then we need a wrapper function outside of the class
-     * */
-    const navigation = useNavigate();
-    return (<Login navigate={navigation}></Login>); 
-}
+* */

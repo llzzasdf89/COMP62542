@@ -4,7 +4,7 @@ public class StudentUnion {
 
     private static StudentUnion instance;
 
-    private StudentUnion() {
+    public StudentUnion() {
     }
 
     public static synchronized StudentUnion createInstance() {
@@ -21,6 +21,7 @@ public class StudentUnion {
 
     public void deleteNewsletter(Newsletter newsletter) {
         newsletters.remove(newsletter);
+        System.out.println("newsletter deleted");
     }
 
     public void updateNewsletter(Newsletter newsletter, String content) {

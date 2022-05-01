@@ -1,8 +1,15 @@
 import React,{Component} from 'react'
 import './Timetable.css'
+import {DayPilotCalendar} from "daypilot-pro-react";
+import TimetableConfig from './TimetableConfig';
 class Timetable extends Component{
     render(){
-        return <div>这里是Timetable</div>
+        return <div className='timetableContainer'> 
+        <DayPilotCalendar
+        {...TimetableConfig}
+        /
+        >
+        </div>
     }
 }
 export default Timetable

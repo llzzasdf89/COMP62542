@@ -1,0 +1,7 @@
+.timetableContainer{
+    z-index: -1000;
+    zoom:0.9
+}
+.calendar_default_corner > div + div{ /*select the corner button, hide it*/
+    display: none;
+}

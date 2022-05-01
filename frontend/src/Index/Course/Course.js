@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import './Course.css'
 class Course extends Component{
     render(){
-        return <div>这里是Course</div>
+        return <div>Your optional Courses are: <br/> Your Mandatory Courses are:</div>
     }
 }
 export default Course

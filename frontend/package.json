@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.20.1",
+    "daypilot-pro-react": "https://npm.daypilot.org/daypilot-pro-react/trial/2022.2.5272.tar.gz",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",

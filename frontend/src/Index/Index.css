@@ -17,3 +17,6 @@
 .ant-menu-item {
  flex-grow: 1;
 }
+.footerContainer{
+    z-index: 1000;
+}

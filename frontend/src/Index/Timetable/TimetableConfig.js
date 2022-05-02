@@ -24,12 +24,20 @@ const mockCourses = [
     {
         title:'Software Engineering',
         startTime:"2022-05-02T09:00:00",
-        endTime:'2022-05-02T11:00:00'
+        endTime:'2022-05-02T11:00:00',
+        type:'Mandatory'
 },
     {
         title:'Modelling Data on the Web',
         startTime:"2022-05-03T13:00:00",
-        endTime:'2022-05-03T15:00:00'
+        endTime:'2022-05-03T15:00:00',
+        type:'Mandatory'
+    },
+    {
+        title:'Querying Data on the Web',
+        startTime:'2022-05-04T15:00:00',
+        endTime:'2022-05-04T17:00:00',
+        type:'Optional'
     }
 ]
 const courses = mockCourses.map((item) => generateCourse(item))
@@ -60,4 +68,4 @@ const TimetableConfig = {
   eventEditHandling: "Update"
 } 
 
-export default TimetableConfig
+export {TimetableConfig,mockCourses}

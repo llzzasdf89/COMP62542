@@ -60,6 +60,7 @@ class Index extends Component{
                 className='header-menu'
                 items={menuItem}
                 defaultSelectedKeys = {[menuItem[0].key]}
+                selectedKeys = {[this.currentRoute?this.currentRoute.substring(1):'Home']}
                 /
                 >
             </Header>
@@ -67,6 +68,7 @@ class Index extends Component{
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item key={this.currentRoute}>{this.currentRoute}</Breadcrumb.Item>
                 </Breadcrumb>
+
                 <div className="contentContainer-contentBox">
                 <Outlet context = {this.state}></Outlet> {/*Outlet is a placeholder for children component */}
 

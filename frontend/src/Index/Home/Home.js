@@ -9,7 +9,15 @@ class Home extends Component{
         this.state = student
     }
     render(){
-        return <div>Welcome <br/> Student ID: {this.state.studentID}</div>
+        return <div className="homeContainer">
+                <div className='homeContainer-header'></div>
+                Welcome Mr.Li
+                <br/> 
+                <div className='homeContainer-body'>
+                Student ID: {this.state.studentID}
+                </div>
+                
+                </div>
     }
 }
 

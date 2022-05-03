@@ -1,6 +1,6 @@
 //config of the Timetable, including the how many days to display, the time range...etc.
 import {DayPilot} from "daypilot-pro-react";
-const generateCourse = (course)=>{
+const generateCourseEvent = (course)=>{
     /**
      * Because each course event in the timetable is immutable 
      * The only difference is that each course's time slot.
@@ -37,17 +37,18 @@ const mockCourses = [
         title:'Querying Data on the Web',
         startTime:'2022-05-04T15:00:00',
         endTime:'2022-05-04T17:00:00',
-        type:'Optional'
+        type:'Optional',
+        department:"Mathematics"
     }
 ]
-const courses = mockCourses.map((item) => generateCourse(item))
-const TimetableConfig = {
+const TimetableConfig = (student)=>{
+    const config = {
     startDate: "2022-05-02",
     viewType:"WorkWeek",
     headerDateFormat: "dddd",
     dayBeginsHour: 9,
     dayEndsHour: 18,
-    events:courses,
+    events:student.course.map((course)=>generateCourseEvent(course)),
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: async (args) => {
     const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
@@ -66,6 +67,8 @@ const TimetableConfig = {
   eventResizeHandling: "Update",
   eventClickHandling: "Edit",
   eventEditHandling: "Update"
+    }
+    return config
 } 
 
 export {TimetableConfig,mockCourses}

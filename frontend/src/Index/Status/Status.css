@@ -1,7 +1,6 @@
 .statusContainer{
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    align-items: center;
+    line-height:2rem
+}
+.statusContainer p {
+    margin:1rem 0;
 }

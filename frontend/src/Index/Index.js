@@ -31,10 +31,55 @@ class Index extends Component{
         super(props)
         //receive the input from Login component, including currentPath
         const {location} = props
-        const {inputValue} = location.state || '10086' //default value, preventing the value is empty
+        const defaultStudent = {
+            name:'RichardZhiLi',
+            studentID:'1000086',
+            status:'unregistered',
+            course:[
+                {
+                    title:'Software Engineering',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00',
+                    type:'Mandatory'
+                },
+                {
+                    title:'Querying Data on the Web',
+                    startTime:'2022-05-04T15:00:00',
+                    endTime:'2022-05-04T17:00:00',
+                    type:'Optional',
+                    department:"Mathematics"
+                },
+                {
+                    title:'Modelling data on the web',
+                    startTime:'2022-05-05T15:00:00',
+                    endTime:'2022-05-05T17:00:00',
+                    type:'Optional Available',
+                    department:"Computer Science"
+                }
+            ],
+            activities:[
+                {
+                    type:'tutorial',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00'
+                },
+                {
+                    type:'supervision meeting',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00'
+                }
+            ],
+            newsletter:[{
+                    title:'1111',
+                    content:'HHHHH'
+            }],
+            reminder:'Your deadline of payment is 2022-05-09, please notice'
+        }
+        let student = defaultStudent;//default value is defaultStudent, preventing the value is empty
+        if(location.state) student= location.state.student
         const {pathname} = location
         this.shouldRedirect = shouldRedirect(pathname)
-        this.state = {studentID: inputValue} //bind it to the state object of React
+        this.state = {student} //bind it to the state object of React
         this.currentRoute =routeNameMap.get(pathname)
     }
     shouldComponentUpdate(nextProps){

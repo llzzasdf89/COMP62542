@@ -25,9 +25,33 @@ class ListComponent extends Component{
           renderItem={course => {
             let listItem = null
             //According to the title, generate different list item button
-            if(listTitle === 'Your Mandatory Course') listItem = <List.Item>{course.title}</List.Item>
-            else if (listTitle === 'Your Optional Course') listItem = <List.Item actions={[<Button type='primary' shape='round' onClick={()=>this.handleClick(course,'delete')}>Delete</Button>]}>{course.title}</List.Item>
-            else if (listTitle === 'Optional Courses Available') listItem = <List.Item actions={[<Button type='primary' shape='round' onClick={()=>this.handleClick(course,'add')} >Add</Button>]}>{course.title}</List.Item>
+            if(listTitle === 'Your Mandatory Course') listItem = <List.Item><span style={{fontWeight:'bolder'}}>{course.title}</span></List.Item>
+            else if (listTitle === 'Your Optional Course') {
+              
+              listItem = <List.Item 
+              actions={[<Button 
+              type='primary' 
+              shape='round' 
+              onClick={()=>this.handleClick(course,'delete')}>Delete</Button>]}>
+              <List.Item.Meta
+                title={course.title}
+                description={course.department}
+              />
+              </List.Item>
+              
+              }
+            else if (listTitle === 'Optional Courses Available') {
+              listItem = <List.Item 
+              actions={[<Button 
+              type='primary' 
+              shape='round' 
+              onClick={()=>this.handleClick(course,'add')}>Add</Button>]}>
+              <List.Item.Meta
+                title={course.title}
+                description={course.department}
+              />
+              </List.Item>
+            }
             return listItem
           }
           }

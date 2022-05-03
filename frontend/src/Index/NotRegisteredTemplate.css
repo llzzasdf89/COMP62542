@@ -1,0 +1,10 @@
+.resultTemplate{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.resultTemplate svg {
+    height: 10rem;  
+    width: 10rem;
+}

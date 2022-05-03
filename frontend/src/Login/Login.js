@@ -19,16 +19,65 @@ class Login extends Component {
                 content:<div><p>Please input a 8 digit number</p></div>
             })
         }
-        this.setState({inputValue:input})
-        const {navigate,state} = this
-        navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
+        /**
+         * The place is preserved for API request
+         */
+        //mock data
+        const student = {
+            name:'RichardZhiLi',
+            studentID:input,
+            status:'unregistered',
+            course:[
+                {
+                    title:'Software Engineering',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00',
+                    type:'Mandatory'
+                },
+                {
+                    title:'Querying Data on the Web',
+                    startTime:'2022-05-04T15:00:00',
+                    endTime:'2022-05-04T17:00:00',
+                    type:'Optional',
+                    department:"Mathematics"
+                },
+                {
+                    title:'Modelling data on the web',
+                    startTime:'2022-05-05T15:00:00',
+                    endTime:'2022-05-05T17:00:00',
+                    type:'Optional Available',
+                    department:"Computer Science"
+                }
+            ],
+            activities:[
+                {
+                    type:'tutorial',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00'
+                },
+                {
+                    type:'supervision meeting',
+                    startTime:"2022-05-02T09:00:00",
+                    endTime:'2022-05-02T11:00:00'
+                }
+            ],
+            newsletter:[{
+                    title:'1111',
+                    content:'HHHHH'
+            }]
+        }
+        this.setState({student},()=>{
+            const {navigate,state} = this
+            navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
+        }) //setState is a asynchronous function, if we need to pass the data to the next page, we need to write it in the callback function
     }
     constructor(props){
         super(props)
         //bind the navigation method to the global instance 
         this.navigate = props.navigate
         this.state = {
-            inputValue:''
+            inputValue:'',
+            student:null
         }
     }
     render(){

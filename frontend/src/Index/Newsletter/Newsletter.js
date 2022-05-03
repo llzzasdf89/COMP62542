@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import { useOutletContext } from 'react-router-dom'
 import NotRegisteredTemplate from '../NotRegisteredTemplate'
 import {List, Button} from 'antd'
-import {  CheckCircleTwoTone } from '@ant-design/icons';
 import './Newsletter.css'
 class Newsletter extends Component{
     constructor(props){
@@ -27,19 +26,30 @@ class Newsletter extends Component{
         iconArr[index].isLoading =  true
         this.setState(iconArr)
         //exchange the status of the button
-        if(!iconArr[index].isGhost) 
+        if(!iconArr[index].isGhost) {
+            //this branch shows that student needs to subscribe the newsletter
+            const {student} = this.state
+            student.newsletter[index].subscribed = true
             setTimeout(()=>{ //if button is subscribe
                 iconArr[index].text = 'unsubscribe'
                 iconArr[index].isLoading = false
                 iconArr[index].isGhost = true
                 this.setState(iconArr)
             },3000)
-        else setTimeout(()=>{ //if button is unscribe
-            iconArr[index].text = 'subscribe'
-            iconArr[index].isLoading = false
-            iconArr[index].isGhost = false
-            this.setState(iconArr)
-        })
+            this.setState({student})
+        }
+        else {
+            //unsubscribe
+            const {student} = this.state
+            student.newsletter[index].subscribed = false
+            setTimeout(()=>{ //if button is unscribe
+                iconArr[index].text = 'subscribe'
+                iconArr[index].isLoading = false
+                iconArr[index].isGhost = false
+                this.setState(iconArr)
+            })
+            this.setState({student}) //update the data in the student
+        }
     }
     render(){
         const {status} = this.state.student

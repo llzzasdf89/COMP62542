@@ -2,12 +2,12 @@ package Entity;
 public class NotRegisteredState implements StudentState {
 
     Student student;
+    String studentState = "not registered";
 
     @Override
     public void state() {
         System.out.println("You are not registered!");
         registration();
-
     }
 
     public void registration() {

@@ -1,9 +1,11 @@
 package Dao;
+import Entity.Course;
 import Entity.Newsletter;
+import Entity.OptCourse;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+
 public class NewsletterDao {
     //add newsletter to the database
     public void addNewsletter(Newsletter newsletter)
@@ -68,4 +70,31 @@ public class NewsletterDao {
         System.out.println("update successfully!"+content);
     }
 
+    //show all newsletters in the database
+    public ArrayList<Newsletter> getAllNewsletters() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Newsletter> newsletters = new ArrayList<>();
+
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "select * from newsletter ";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String content = rs.getString("content");
+                String newsNum = rs.getString("newsNum");
+
+                Newsletter newsletter = new Newsletter(content,newsNum);
+                newsletters.add(newsletter);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConn(conn, stmt, rs);
+        }
+        System.out.println(newsletters);
+        return newsletters;
+    }
 }

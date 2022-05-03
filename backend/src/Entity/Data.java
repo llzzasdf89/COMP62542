@@ -14,7 +14,7 @@ public class Data implements DataContainer{
         if(data != null) return; //singleton pattern
         //Suppose we have ten optional courses and mandatory courses.
         for(int i = 0; i < 10; i++){
-            Students.add(StudentFactory.createStudent(i));   
+            Students.add(StudentFactory.createStudent(i,null));
             Course tmp = CourseFactory.createCourse("ManCourse", String.valueOf(i), "ManCourse" + String.valueOf(i), null, null);
             tmp.initateCourse(); //this is to invocate the 'template method' in each course.
             Courses.add(tmp);

@@ -1,6 +1,7 @@
 package Entity;
 public class PendingState implements StudentState {
     Student student;
+    String studentState = "registration pending";
 
     @Override
     public void state() {

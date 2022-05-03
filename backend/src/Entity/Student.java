@@ -5,6 +5,8 @@ public class Student implements CourseVisitor {
 
     private long uniNum;
 
+    private String name;
+
     private StudentState studentState;
 
     private ArrayList<Course> courses = new ArrayList<Course>();
@@ -23,8 +25,17 @@ public class Student implements CourseVisitor {
         return uniNum;
     }
 
-    public Student(long uniNum) {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Student(long uniNum, String name) {
         this.uniNum = uniNum;
+        this.name = name;
         StudentState studentState = new NotRegisteredState();
         this.setStudentState(studentState);
     }

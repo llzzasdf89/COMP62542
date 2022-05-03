@@ -14,19 +14,16 @@ import java.util.ArrayList;
 public abstract class Course {
     private String courseNum;
     private String name;
-
-    public enum Time {
-        Mon, Tue, Wed, Thu, Fri
-    }
-
-    private Course.Time time;
+    public String time;
+    private String courseType;
     private ArrayList<Course> subActivities = new ArrayList<Course>();
     private ArrayList<Student> students = new ArrayList<Student>();
 
-    public Course(String courseNum, String name, Course.Time time) {
+    public Course(String courseNum, String name, String courseType, String time) {
         this.courseNum = courseNum;
         this.name = name;
         this.time = time;
+        this.courseType = courseType;
     }
     public Course(){}
     abstract void initateCourse(); //template method, needs to be override by ManCourse and OptCourse
@@ -46,11 +43,18 @@ public abstract class Course {
         return name;
     }
 
-    public void setTime(Time time) {
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
+    }
+    public String getCourseType() {
+        return courseType;
+    }
+
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 

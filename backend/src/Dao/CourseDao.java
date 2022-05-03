@@ -18,7 +18,7 @@ public class CourseDao {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getCourseNum());
             stmt.setString(2, course.getName());
-            stmt.setString(3, course.getCourseNum().substring(0,2));
+            stmt.setString(3, course.getCourseType());
             stmt.setString(4, String.valueOf(course.getTime()));
             stmt.executeUpdate();
         }
@@ -51,18 +51,18 @@ public class CourseDao {
         System.out.println("remove successfully!");
     }
 
-    //show all courses in the database
-    public ArrayList<Course> getAllCourses() {
+    //show all optional courses in the database
+    public ArrayList<Course> getAllOptionalCourses() {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         ArrayList<Course> subActivity = new ArrayList<>();
 
         try {
             conn = JDBCUtil.getConn();
-            String sql = "select * from courses";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = "select * from courses where courseType = 'OptCourse'";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 String courseNum = rs.getString("courseNum");
                 String name = rs.getString("name");
@@ -70,16 +70,15 @@ public class CourseDao {
                 String courseType = rs.getString("courseType");
                 String time = rs.getString("time");
 
-                Course course = new OptCourse(courseNum,name,department,time);
-                System.out.println(course.getName());
+                Course course = new OptCourse(courseNum,name,department,courseType,time);
                 subActivity.add(course);
+                System.out.println(course.getCourseNum());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeConn(conn, stmt, rs);
         }
-        System.out.println(subActivity);
         return subActivity;
     }
 }

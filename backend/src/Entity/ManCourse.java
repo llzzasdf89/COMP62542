@@ -1,7 +1,8 @@
 package Entity;
 public class ManCourse extends Course {
-    public ManCourse(String courseNum, String name, Course.Time time) {
-        super(courseNum, name, time);
+
+    public ManCourse(String courseNum, String name, String courseType, String time) {
+        super(courseNum, name, courseType, time);
     }
     
     @Override

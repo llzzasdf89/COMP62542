@@ -2,14 +2,11 @@ package Entity;
 public class OptCourse extends Course {
     private String department;
 
-    public OptCourse(String courseNum, String name, String department, Course.Time time) {
-        super(courseNum, name, time);
+    public OptCourse(String courseNum, String name, String department, String courseType, String time) {
+        super(courseNum, name, courseType, time);
         this.department = department;
     }
     public OptCourse(){}
-
-    public OptCourse(String courseNum, String name, String department, String time) {
-    }
 
     public void setDepartment(String department) {
         this.department = department;

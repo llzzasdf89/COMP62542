@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class RegisteredState implements StudentState {
 
     Student student;
+    String studentState = "registered";
 
     private ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -11,7 +12,6 @@ public class RegisteredState implements StudentState {
 
     @Override
     public void state() {
-
         System.out.println("you are registered!");
     }
 

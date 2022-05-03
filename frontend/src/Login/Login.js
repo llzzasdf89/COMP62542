@@ -84,6 +84,7 @@ class Login extends Component {
         const layout = 
         <div className='layout'>
             <div className='loginContainer'>
+        <div className='loginContainer-inputArea'>
         <Input 
         placeholder='Input your unique number here' 
         type='number'
@@ -94,6 +95,8 @@ class Login extends Component {
         prefix={<UserOutlined></UserOutlined>}
         >
         </Input>
+        </div>
+        <div className='loginContainer-ButtonArea'>
         <Button 
         type ='primary' 
         shape="round" 
@@ -104,6 +107,15 @@ class Login extends Component {
         >
         Submit
         </Button>
+        <Button 
+        block 
+        type='primary' 
+        shape='round'
+        href='/Admissioner'
+        >
+        Click here if you are admissioner
+        </Button>
+        </div>
             </div>
         </div>
         return layout

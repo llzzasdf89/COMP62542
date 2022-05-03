@@ -6,6 +6,9 @@ import Course from './Index/Course/Course'
 import Newsletter from './Index/Newsletter/Newsletter'
 import Timetable from './Index/Timetable/Timetable'
 import Home from './Index/Home/Home'
+import StudentUnion from './Admissioner/StudentUnion/StudentUnion'
+import SupportOffice from './Admissioner/SupportOffice/SupportOffice'
+import AdmissionOffice from './Admissioner/AdmissionOffice/AdmissionOffice'
 import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom'
 /**
  * Manage the router of all the pages using "react-router"
@@ -24,6 +27,12 @@ const RouterMap =
             <Route path = 'Newsletter' element = {<Newsletter></Newsletter>}></Route>
             ({/* Default route, if user navigate to anywhere else of the specific route, redirect him to the home page */})
             <Route path = '*' element = {<Navigate to='/Index/Home'></Navigate>}></Route>
+        </Route>
+        <Route path='/Admissioner' element = {<Index></Index>}>
+            <Route path = 'StudentUnion' element={<StudentUnion></StudentUnion>}></Route>
+            <Route path = 'SupportOffice' element= {<SupportOffice></SupportOffice>}></Route>
+            <Route path = 'AdmissionOffice' element={<AdmissionOffice></AdmissionOffice>}></Route>
+            <Route path = '*' element = {<Navigate to='/Admissioner/AdmissionOffice'></Navigate>}></Route>
         </Route>
     </Routes>
 </BrowserRouter>

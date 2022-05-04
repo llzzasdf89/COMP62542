@@ -1,0 +1,42 @@
+.container{
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+}
+.reminderTitle{
+    height:8rem;
+}
+.ant-card-body{
+    height: 100%;   
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.newsletterArea{
+    flex-basis: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+.reminderArea{
+    flex-basis: 50%;
+    height: 100%;
+}
+.reminderArea > .ant-card-body {
+    display: flex;
+    flex-direction: column-reverse !important;
+    justify-content: space-between;
+}
+.reminderArea-list{
+    flex-basis: 50%;
+    margin-top:30px;
+}
+.reminderArea-input{
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.ButtonArea{
+    margin-top: 3rem
+}

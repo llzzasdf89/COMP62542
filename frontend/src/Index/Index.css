@@ -11,7 +11,8 @@
 .contentContainer-contentBox{
     height:100%;
     padding: 24px;
-    background: #fff
+    background: #fff;
+    overflow: hidden;
 }
 .headerContainer{
     height:10vh;
@@ -28,8 +29,7 @@
 .contentContainer{
     padding:0 50px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: column;;
 }
 .footerContainer{
     z-index: 1000;

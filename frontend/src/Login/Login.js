@@ -19,13 +19,9 @@ class Login extends Component {
                 content:<div><p>Please input a 8 digit number</p></div>
             })
         }
-        /**
-         * The place is preserved for API request
-         */
-        //mock data
-        const student = {
+        const defaultStudent = {
             name:'RichardZhiLi',
-            studentID:input,
+            studentID:'1000086',
             status:'unregistered',
             course:[
                 {
@@ -63,10 +59,12 @@ class Login extends Component {
             ],
             newsletter:[{
                     title:'1111',
-                    content:'HHHHH'
-            }]
+                    content:'HHHHH',
+                    subscribed:false
+            }],
+            reminder:'Your deadline of payment is 2022-05-09, please notice'
         }
-        this.setState({student},()=>{
+        this.setState({student:defaultStudent},()=>{
             const {navigate,state} = this
             navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
         }) //setState is a asynchronous function, if we need to pass the data to the next page, we need to write it in the callback function

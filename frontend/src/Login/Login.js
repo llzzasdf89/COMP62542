@@ -21,7 +21,7 @@ class Login extends Component {
         }
         const defaultStudent = {
             name:'RichardZhiLi',
-            studentID:'1000086',
+            studentID:input,
             status:'unregistered',
             course:[
                 {

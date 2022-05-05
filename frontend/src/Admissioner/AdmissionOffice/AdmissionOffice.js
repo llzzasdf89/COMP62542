@@ -12,7 +12,7 @@ class AdmissionOffice extends Component{
         })
         reminder.push({
             content:reminderContentArea
-        })
+        }) //update the global reminder array according to the input of user
         Modal.success({
             content:<div><p>Send reminder success</p></div>
         })
@@ -36,12 +36,6 @@ class AdmissionOffice extends Component{
     this.setState({
         reminderEditArr
     })
-   }
-   sendReminderList = ()=>{
-       const {reminder} = this.state
-       return Modal.success({
-           content:<div><p>Confirm reminder list success</p></div>
-       })
    }
    deleteReminder = (index) => {
        const {reminderEditArr, reminder} = this.state
@@ -76,7 +70,6 @@ class AdmissionOffice extends Component{
             <div className='reminderArea-list'>
             <List  
             header="Reminder List"
-            footer = {<Button type="primary" shape='round' block onClick={this.sendReminderList}> Confirm</Button>}
             dataSource={this.state.reminder}
             renderItem = {(item,index)=>
                 <List.Item 

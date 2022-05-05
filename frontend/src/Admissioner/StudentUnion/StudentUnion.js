@@ -2,10 +2,12 @@ import React,{Component} from 'react'
 import {List, Divider,Card, Input, Button,Modal} from 'antd'
 import './StudentUnion.css'
 const {TextArea} = Input
+//mock data of newsletter
 const newsletter = [{
     content:'test1'
 }]
 for(let i = 0; i < 10; i++) {
+    //push 10 mock newsletter inside the array
     const tmp = {
         content:"test" + (i+2)
     }
@@ -20,6 +22,7 @@ class StudentUnion extends Component{
             contentArea:''
         }
     }
+    //handler when user click the 'delete' button
     deleteNewsletter = (index)=>{
         const {newsletter} = this.state
         newsletter.splice(index,1)
@@ -27,6 +30,7 @@ class StudentUnion extends Component{
             newsletter
         })
     }
+    //listener of input event
     inputContent = (e)=>{
         let {contentArea} = this.state
         contentArea = e.target.value
@@ -34,6 +38,7 @@ class StudentUnion extends Component{
             contentArea
         })
     }
+    //listener of input event
     publishNewsletter = ()=>{
         const {contentArea,newsletter,newsletterEditArr} = this.state
         if(contentArea.length === 0) return Modal.error({
@@ -51,6 +56,7 @@ class StudentUnion extends Component{
             newsletterEditArr
         })
     }
+    //listener when user edit the content inside the content area
     EditNewsletter = (index,e)=>{
         const {newsletter} = this.state
         newsletter[index].content = e.target.value
@@ -58,16 +64,13 @@ class StudentUnion extends Component{
             newsletter
         })
     }
+    //listener when user clicks the edit button
     enableEditNewsletter = (index) =>{
         const {newsletterEditArr} = this.state
         newsletterEditArr[index] = !newsletterEditArr[index]
         this.setState({
             newsletterEditArr
         })
-    }
-    sendList = e=>{
-        const {newsletter} = this.state
-        return newsletter
     }
     render(){
         return <div className="studentunionContainer">
@@ -76,12 +79,6 @@ class StudentUnion extends Component{
                 dataSource = {this.state.newsletter}
                 
                 header = {<div>Newsletter List</div>}
-                footer = {
-                <Button type='primary' 
-                block 
-                shape='round' 
-                onClick={this.sendList}
-                >Confirm</Button>}
                 renderItem = {
                     (item,index)=> <List.Item
                     actions={[<Button 

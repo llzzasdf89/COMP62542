@@ -1,5 +1,6 @@
 //config of the Timetable, including the how many days to display, the time range...etc.
 import {DayPilot} from "daypilot-pro-react";
+//define the form options when creating the new event in the timetable
 const generateCourseEvent = (course)=>{
     /**
      * Because each course event in the timetable is immutable 
@@ -19,56 +20,96 @@ const generateCourseEvent = (course)=>{
     }
     return courseEvent
 }
- //This is courses' mock data, these courses are not able to be deleted by the user
-const mockCourses = [
-    {
-        title:'Software Engineering',
-        startTime:"2022-05-02T09:00:00",
-        endTime:'2022-05-02T11:00:00',
-        type:'Mandatory'
-},
-    {
-        title:'Modelling Data on the Web',
-        startTime:"2022-05-03T13:00:00",
-        endTime:'2022-05-03T15:00:00',
-        type:'Mandatory'
-    },
-    {
-        title:'Querying Data on the Web',
-        startTime:'2022-05-04T15:00:00',
-        endTime:'2022-05-04T17:00:00',
-        type:'Optional',
-        department:"Mathematics"
+const generateActivityEvent = activity=>{
+    const activityEvent = {
+        id:activity.id,
+        text:activity.type + '\n' + activity.course,
+        moveDisabled:true,
+        doubleClickDisabled:true,
+        resizeDisabled:true,
+        clickDisabled:true,
+        start:activity.startTime,
+        end:activity.endTime
     }
-]
+    return activityEvent
+}
 const TimetableConfig = (student)=>{
+    console.log(student)
+    const activityOptions = [
+        {
+            name:'Supervision Meeting',
+            id:'Supervision Meeting'
+        },
+        {
+            name:'Tutorial',
+            id:'Tutorial'
+        }
+    ]
+    const courseOptions = student.course.map((course)=>{
+        return {
+            name:course.title,
+            id:course.title
+        }
+    })
+    const deleteEvent = (e)=>{
+        console.log(e)
+    }
+    const form = [
+        {name:'Create Activity', id:'CreateActivity', options:activityOptions},
+        {name:'From Course', id:'FromCourse',options:courseOptions}
+    ] //define the form fields when creating even in the timetable, the first field ask for choosing activity type, the second for course
+    const data = {
+    'CreateActivity':activityOptions[0].name, //set the default option of the form
+    'FromCourse':courseOptions[0].name
+    } //this is used to define the default value when creating the form
     const config = {
     startDate: "2022-05-02",
     viewType:"WorkWeek",
     headerDateFormat: "dddd",
     dayBeginsHour: 9,
     dayEndsHour: 18,
-    events:student.course.map((course)=>generateCourseEvent(course)),
+    events:student.course.map((course)=>generateCourseEvent(course)).concat(student.activities.map((activity)=>generateActivityEvent(activity))),
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: async (args) => {
-    const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
-    const dp = args.control;
-    dp.clearSelection();
-    if (modal.canceled) return
-    dp.events.add({
-      start: args.start,
-      end: args.end,
-      id: DayPilot.guid(),
-      text: modal.result
+    
+    DayPilot.Modal.form(form,data).then((resultObj)=>{
+        const dp = args.control;
+        if(resultObj.canceled) { //If user clicked the cancel button
+            dp.clearSelection()
+            return //directly return 
+        }
+        const {result} = resultObj
+        dp.clearSelection();
+        const id = student.activities.length ===0 ? 1: student.activities[student.activities.length-1] + 1
+        dp.events.add({
+        start: args.start,
+        end: args.end,
+        id,
+        text: result.CreateActivity + '\n' + result.FromCourse,
+        clickDisabled:true,
+        moveDisabled:true,
+        resizeDisabled:true
     });
+    //update global student object
+        //create new id for the new activity
+        student.activities.push({
+            type:result.CreateActivity,
+            startTime:args.start.toString(), 
+            endTime:args.end.toString(),
+            course:result.FromCourse,
+            id
+        })
+    })
   },
   eventDeleteHandling: "Update",
-  eventMoveHandling: "Update",
-  eventResizeHandling: "Update",
-  eventClickHandling: "Edit",
-  eventEditHandling: "Update"
+  onEventDeleted: async (args) => { //event handler after deleted event from timetable
+    const {data} = args.e //get the deleted event object from args parameter
+    student.activities.forEach((activity,index)=>{
+        if(activity.id === data.id) return student.activities.splice(index,1)
+    })//remove the activity from the table
+  }
     }
     return config
 } 
 
-export {TimetableConfig,mockCourses}
+export {TimetableConfig}

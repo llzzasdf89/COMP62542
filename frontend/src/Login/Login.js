@@ -47,14 +47,18 @@ class Login extends Component {
             ],
             activities:[
                 {
-                    type:'tutorial',
+                    id:1,
+                    type:'Tutorial',
                     startTime:"2022-05-02T09:00:00",
-                    endTime:'2022-05-02T11:00:00'
+                    endTime:'2022-05-02T11:00:00',
+                    course:this.course[0].title
                 },
                 {
-                    type:'supervision meeting',
+                    id:2,
+                    type:'Supervision Meeting',
                     startTime:"2022-05-02T09:00:00",
-                    endTime:'2022-05-02T11:00:00'
+                    endTime:'2022-05-02T11:00:00',
+                    course:this.course[1].title
                 }
             ],
             newsletter:[{

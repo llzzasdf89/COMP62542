@@ -46,7 +46,6 @@ public class OfficeServiceImpl implements OfficeService{
     public void sendReminder(String reminder) {
         OfficeDao offDao = new OfficeDao();
         ArrayList<Student> students  = offDao.getAllPendingStudents();
-        for(Student s : students)
-            s.reminderNotice("the payment deadline is 2022/9/1");
+
     }
 }

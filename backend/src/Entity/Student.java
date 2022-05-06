@@ -1,7 +1,10 @@
 package Entity;
+import Dao.StudentDao;
+
 import java.util.ArrayList;
 
 public class Student implements CourseVisitor {
+    public static ArrayList<Student> students = new ArrayList<>();
 
     private long uniNum;
 
@@ -13,7 +16,7 @@ public class Student implements CourseVisitor {
 
     private ArrayList<Newsletter> newsletters = new ArrayList<Newsletter>();
 
-    private ArrayList<String> reminders = new ArrayList<String>();
+    public ArrayList<Reminder> reminders = new ArrayList<Reminder>();
 
     private SelectCourseStrategy selectCourseStrategy;
 
@@ -38,9 +41,12 @@ public class Student implements CourseVisitor {
         this.name = name;
         StudentState studentState = new NotRegisteredState();
         this.setStudentState(studentState);
+        StudentDao studentDao = new StudentDao();
+        studentDao.newStudent(uniNum,name);
+        students.add(this);
     }
 
-    public ArrayList<String> getReminders() {
+    public ArrayList<Reminder> getReminders() {
         return reminders;
     }
 
@@ -68,6 +74,8 @@ public class Student implements CourseVisitor {
     }
 
     public void subscribeNewsletter(Newsletter newsletter) {
+        StudentDao studentDao = new StudentDao();
+        studentDao.addNewsSelection(this.getUniNum(),newsletter.getNewsNum());
         newsletters.add(newsletter);
         newsletter.addSubscriber(this);
     }
@@ -81,6 +89,8 @@ public class Student implements CourseVisitor {
     }
 
     public void cancelNewsletter(Newsletter newsletter) {
+        StudentDao studentDao = new StudentDao();
+        studentDao.removeNewsSelection(this.getUniNum(),newsletter.getNewsNum());
         newsletters.remove(newsletter);
         newsletter.removeSubscriber(this);
     }
@@ -89,9 +99,8 @@ public class Student implements CourseVisitor {
         System.out.println("newletter updated   ");
     }
 
-    public void reminderNotice(String reminder) {
-        System.out.println(reminder);
-
+    public void reminderNotice(Reminder reminder) {
+       reminders.add(reminder);
     }
 
     @Override

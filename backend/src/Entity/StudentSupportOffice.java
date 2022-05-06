@@ -1,5 +1,10 @@
 package Entity;
+
+import Dao.StudentDao;
+
 public class StudentSupportOffice extends OfficeDecorator implements StudentVisitor {
+    StudentDao studentDao = new StudentDao();
+
     private static StudentSupportOffice instance;
     StudentUnionAdapter studentUnionAdapter;
 
@@ -30,7 +35,7 @@ public class StudentSupportOffice extends OfficeDecorator implements StudentVisi
     }
 
     @Override
-    public void sendReminder(String reminder) {
+    public void sendReminder(Reminder reminder) {
         // Student Support Office is not able to send reminder, so left it blank
     }
 
@@ -40,6 +45,7 @@ public class StudentSupportOffice extends OfficeDecorator implements StudentVisi
         // student in the course list.
         student.getCourse().remove(course);
         course.removeStudent(student);
+        studentDao.removeCourseSelection(student.getUniNum(),course.getCourseNum());
     }
 
     @Override

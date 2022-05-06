@@ -1,4 +1,7 @@
 package Entity;
+
+import Dao.StudentDao;
+
 public class PendingState implements StudentState {
     Student student;
     String studentState = "registration pending";
@@ -20,7 +23,8 @@ public class PendingState implements StudentState {
     }
 
     public void pay() {
-        System.out.println("you are done paying!");
+        StudentDao studentDao =new StudentDao();
+        studentDao.changeStatus(this.student.getUniNum(),"registered");
         this.getStudent().setStudentState(new RegisteredState());
 
     }

@@ -2,6 +2,7 @@ package Entity;
 import java.util.ArrayList;
 
 public class Newsletter {
+    public static ArrayList<Newsletter> newsletters = new ArrayList<>();
     private String content;
     private String newsNum;
     private ArrayList<Student> subscribers = new ArrayList<Student>();
@@ -9,6 +10,7 @@ public class Newsletter {
     public Newsletter(String content, String newsNum) {
         this.content = content;
         this.newsNum = newsNum;
+        newsletters.add(this);
     }
     public Newsletter(){}
     public void setContent(String Content){

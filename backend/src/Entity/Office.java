@@ -8,7 +8,7 @@ public interface Office {
      */
     public void removeStudent(Student student);
 
-    public void sendReminder(String reminder);
+    public void sendReminder(Reminder reminder);
 
     public void deleteNewsletter(Newsletter newsletter);
 }

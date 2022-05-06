@@ -1,9 +1,25 @@
 package Entity;
+
+import Dao.CourseDao;
+
+import java.util.ArrayList;
+
 public class ManCourse extends Course {
+    private ArrayList<Course> subActivities = new ArrayList<Course>();
+    public void addSubActivity(Course course) {
+        subActivities.add(course);
+    }
+
+    public void removeSubActivity(Course course) {
+        subActivities.remove(course);
+    }
 
     public ManCourse(String courseNum, String name, String courseType, String time) {
         super(courseNum, name, courseType, time);
+        CourseDao courseDao  =new CourseDao();
+        courseDao.addCourse(this);
     }
+
     
     @Override
     void initateCourse() {

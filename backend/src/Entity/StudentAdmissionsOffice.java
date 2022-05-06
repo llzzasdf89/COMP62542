@@ -1,4 +1,7 @@
 package Entity;
+
+import Dao.ReminderDao;
+
 public class StudentAdmissionsOffice implements Office, StudentVisitor {
     StudentUnionAdapter studentUnionAdapter;
     private static StudentAdmissionsOffice instance;
@@ -25,14 +28,16 @@ public class StudentAdmissionsOffice implements Office, StudentVisitor {
     }
 
     @Override
-    public void sendReminder(String reminder) {
+    public void sendReminder(Reminder reminder) {
         Data data = Data.getDataInstance();
         DataIterator studentlist = data.getStudentIterator();
         while (studentlist.hasNext()) { // Find all the students which are registed. Send them reminder
             Student student = (Student) studentlist.next();
-            if (student.getStudentState() instanceof RegisteredState)
+            if (student.getStudentState() instanceof PendingState)
                 student.reminderNotice(reminder);
         }
+        ReminderDao reminderDao = new ReminderDao();
+        reminderDao.addReminder(reminder);
     }
 
     @Override

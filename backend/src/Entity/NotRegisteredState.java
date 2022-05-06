@@ -1,17 +1,20 @@
 package Entity;
+
+import Dao.StudentDao;
+
 public class NotRegisteredState implements StudentState {
 
     Student student;
-    String studentState = "not registered";
 
     @Override
     public void state() {
-        System.out.println("You are not registered!");
+
         registration();
     }
 
     public void registration() {
-        System.out.println("you are done registration!");
+        StudentDao studentDao = new StudentDao();
+        studentDao.changeStatus(this.student.getUniNum(),"pending");
         this.getStudent().setStudentState(new PendingState());
     }
 

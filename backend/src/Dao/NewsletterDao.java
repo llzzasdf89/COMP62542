@@ -2,6 +2,8 @@ package Dao;
 import Entity.Course;
 import Entity.Newsletter;
 import Entity.OptCourse;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class NewsletterDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("add successfully！");
+        System.out.println("add news successfully！");
     }
 
     //remove newsletter to the database
@@ -47,7 +49,7 @@ public class NewsletterDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("remove successfully!");
+        System.out.println("remove news successfully!");
     }
 
     //update the content of newsletter to the database
@@ -67,15 +69,15 @@ public class NewsletterDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("update successfully!"+content);
+        System.out.println("update news successfully!"+content);
     }
 
     //show all newsletters in the database
-    public ArrayList<Newsletter> getAllNewsletters() {
+    public JSONArray getAllNewsletters() {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
-        ArrayList<Newsletter> newsletters = new ArrayList<>();
+        JSONArray newslettersJson = new JSONArray();
 
         try {
             conn = JDBCUtil.getConn();
@@ -83,18 +85,19 @@ public class NewsletterDao {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                String content = rs.getString("content");
-                String newsNum = rs.getString("newsNum");
+                JSONObject newsletter = new JSONObject();
 
-                Newsletter newsletter = new Newsletter(content,newsNum);
-                newsletters.add(newsletter);
+                newsletter.element("content",rs.getString("content"));
+                newsletter.element("newsNum",rs.getString("newsNum"));
+                newslettersJson.add(newsletter);
+
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeConn(conn, stmt, rs);
         }
-        System.out.println(newsletters);
-        return newsletters;
+        return newslettersJson;
     }
 }

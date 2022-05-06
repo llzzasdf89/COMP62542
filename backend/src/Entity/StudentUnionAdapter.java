@@ -20,7 +20,7 @@ public class StudentUnionAdapter implements Office {
 	}
 
 	@Override
-	public void sendReminder(String reminder) {
+	public void sendReminder(Reminder reminder) {
 		// TODO Auto-generated method stub
 		
 	}

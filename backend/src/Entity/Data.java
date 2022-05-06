@@ -10,19 +10,6 @@ public class Data implements DataContainer{
     private static Data data = new Data();
     private ArrayList<Student> Students = new ArrayList<Student>();
     private ArrayList<Course> Courses= new ArrayList<Course>();
-    public Data (){
-        if(data != null) return; //singleton pattern
-        //Suppose we have ten optional courses and mandatory courses.
-        for(int i = 0; i < 10; i++){
-            Students.add(StudentFactory.createStudent(i,null));
-            Course tmp = CourseFactory.createCourse("ManCourse", String.valueOf(i), "ManCourse" + String.valueOf(i), null, null);
-            tmp.initateCourse(); //this is to invocate the 'template method' in each course.
-            Courses.add(tmp);
-            tmp = CourseFactory.createCourse("OptCourse", String.valueOf(i),"OptCourse" + String.valueOf(i), null, null);
-            tmp.initateCourse();
-            Courses.add(tmp);
-        }
-    }
     public static Data getDataInstance (){
         return data;
     }

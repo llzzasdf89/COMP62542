@@ -18,12 +18,14 @@ public abstract class Course {
     private String courseType;
     private ArrayList<Course> subActivities = new ArrayList<Course>();
     private ArrayList<Student> students = new ArrayList<Student>();
+    public static ArrayList<Course> courses = new ArrayList<>();
 
     public Course(String courseNum, String name, String courseType, String time) {
         this.courseNum = courseNum;
         this.name = name;
         this.time = time;
         this.courseType = courseType;
+        courses.add(this);
     }
     public Course(){}
     abstract void initateCourse(); //template method, needs to be override by ManCourse and OptCourse

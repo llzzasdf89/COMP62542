@@ -2,19 +2,21 @@ package Dao;
 
 import Entity.Course;
 import Entity.OptCourse;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.sql.*;
 import java.util.*;
 
 public class CourseDao {
     //add subActivity like tutorials and others to the database
-    public void addSubActivity(Course course)
+    public void addCourse(Course course)
     {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConn();
-            String sql = "insert into courses(courseNum,name,courseType,time) values(?,?,?,?)";
+            String sql = "insert into courses(courseNum,name,courseType,day) values(?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getCourseNum());
             stmt.setString(2, course.getName());
@@ -32,7 +34,7 @@ public class CourseDao {
     }
 
     //remove subActivity like tutorials and others to the database
-    public void removeSubActivity(String removeCourseNum) {
+    public void removeCourse(String removeCourseNum) {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -52,33 +54,36 @@ public class CourseDao {
     }
 
     //show all optional courses in the database
-    public ArrayList<Course> getAllOptionalCourses() {
+    public JSONArray getAllCourseJson() {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        ArrayList<Course> subActivity = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
 
         try {
             conn = JDBCUtil.getConn();
-            String sql = "select * from courses where courseType = 'OptCourse'";
+            String sql = "select * from courses";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                String courseNum = rs.getString("courseNum");
-                String name = rs.getString("name");
-                String department = rs.getString("department");
-                String courseType = rs.getString("courseType");
-                String time = rs.getString("time");
-
-                Course course = new OptCourse(courseNum,name,department,courseType,time);
-                subActivity.add(course);
-                System.out.println(course.getCourseNum());
+                StudentDao studentDao =new StudentDao();
+                JSONObject courseJSon = new JSONObject();
+                courseJSon.element("courseNum",rs.getString("courseNum"));
+                courseJSon.element("name",rs.getString("name"));
+                courseJSon.element("department",rs.getString("department"));
+                courseJSon.element("courseType",rs.getString("courseType"));
+                courseJSon.element("day",rs.getString("day"));
+                courseJSon.element("startTime",rs.getString("startTime"));
+                courseJSon.element("endTime",rs.getString("endTime"));
+                courseJSon.element("subActivities",studentDao.getSubActivites(rs.getString("courseNum")));
+                jsonArray.add(courseJSon);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtil.closeConn(conn, stmt, rs);
         }
-        return subActivity;
+        System.out.println(jsonArray);
+        return jsonArray;
     }
 }

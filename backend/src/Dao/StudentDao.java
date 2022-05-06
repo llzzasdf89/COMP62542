@@ -3,8 +3,111 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import Entity.*;
+import Service.StudentService;
+import Service.StudentServiceImpl;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 
 public class StudentDao {
+
+    public void newStudent(long uniNum, String name) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "insert into students(uniNum,studentName,studentState) values(?,?,'notRegistered')";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, uniNum);
+            stmt.setString(2, name);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConn(conn, stmt);
+        }
+    }
+
+
+    //get student information
+    public JSONObject getStudentInfo(Long uniNum)
+    {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String name = null;
+        String studentState = null;
+
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "select * from students where uniNum = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, uniNum);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                uniNum = resultSet.getLong("uniNum");
+                 name = resultSet.getString("studentName");
+                 studentState = resultSet.getString("studentState");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            JDBCUtil.closeConn(conn, stmt);
+        }
+        StudentServiceImpl studentService = new StudentServiceImpl();
+        JSONObject studentInfo = new JSONObject();
+        studentInfo.element("uniNum",uniNum);
+        studentInfo.element("name",name);
+        studentInfo.element("status",studentState);
+        studentInfo.element("courses",studentService.showTimeTable(uniNum));
+        return studentInfo;
+    }
+
+    public JSONArray getStudentJson(){
+
+        JSONArray studentsInfoJson = new JSONArray();
+        for (Student s: Student.students) {
+            studentsInfoJson.add(getStudentInfo(s.getUniNum()));
+        }
+        return studentsInfoJson;
+    }
+
+    public JSONArray getSubActivites(String courseNum){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String name = null;
+        String studentState = null;
+        JSONArray jsonArray = new JSONArray();
+
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "select * from courses where courseNum in (select activityNum from subactivities where courseNum = ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, courseNum);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                JSONObject course = new JSONObject();
+                course.element("name",resultSet.getString("name"));
+                course.element("courseNum",resultSet.getString("courseNum"));
+                course.element("department",resultSet.getString("department"));
+                course.element("courseType",resultSet.getString("courseType"));
+                course.element("day",resultSet.getString("day"));
+                course.element("startTime",resultSet.getString("startTime"));
+                course.element("endTime",resultSet.getString("endTime"));
+                jsonArray.element(course);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            JDBCUtil.closeConn(conn, stmt);
+        }
+        System.out.println("get subactivities!");
+        return jsonArray;
+    }
+
     //add courses selection results to the database
     public void addCourseSelection(Long uniNum, String courseNum)
     {
@@ -12,7 +115,7 @@ public class StudentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConn();
-            String sql = "insert into courseselection(uniNum,courseNum) values(?,?)";
+            String sql = "insert ignore into courseselection(uniNum,courseNum) values(?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, uniNum);
             stmt.setString(2, courseNum);
@@ -24,7 +127,7 @@ public class StudentDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("add course successfully！");
+        System.out.println("select course successfully！");
     }
 
     //remove courses selection results from the database
@@ -45,7 +148,7 @@ public class StudentDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("remove course successfully!");
+        System.out.println("exit course successfully!");
     }
 
     //find courses selection results from the database according to the UniNum
@@ -71,10 +174,9 @@ public class StudentDao {
                     String name = rs1.getString("name");
                     String department = rs1.getString("department");
                     String courseType = rs1.getString("courseType");
-                    String time = rs1.getString("time");
-                    Course course = new OptCourse(courseNum, name, department, courseType, time);
+                    String day = rs1.getString("day");
+                    Course course = new OptCourse(courseNum, name, department, courseType, day);
                     subActivity.add(course);
-                    System.out.println(course.getCourseNum());
                 }
             }
         } catch (SQLException e) {
@@ -82,6 +184,7 @@ public class StudentDao {
         } finally {
             JDBCUtil.closeConn(conn, stmt, rs);
         }
+        System.out.println("get selection information of courses!");
         return subActivity;
     }
 
@@ -104,7 +207,8 @@ public class StudentDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("add newsletter successfully！");
+
+        System.out.println("subscribe newsletter successfully！");
     }
 
     //remove newsletter selection results from the database
@@ -125,7 +229,7 @@ public class StudentDao {
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("remove newsletter successfully!");
+
     }
 
     //find newsletter subscribe results from the database according to the UniNum
@@ -192,6 +296,7 @@ public class StudentDao {
     public void changeStatus(Long uniNum, String studentState) {
         Connection conn = null;
         PreparedStatement stmt = null;
+        boolean success =false;
         try {
             conn = JDBCUtil.getConn();
             String sql = "update students set studentState = ? where uniNum = ?";
@@ -199,13 +304,16 @@ public class StudentDao {
             stmt.setString(1, studentState);
             stmt.setLong(2, uniNum);
             stmt.executeUpdate();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         finally{
             JDBCUtil.closeConn(conn, stmt);
         }
-        System.out.println("change successfully!"+studentState);
+        System.out.println("change state successfully!");
+
     }
 
     public boolean judgeExist(Long uniNum, String courseNum){

@@ -1,21 +1,14 @@
 import React,{Component} from 'react'
 import {List, Divider,Card, Input, Button,Modal} from 'antd'
+import { useOutletContext } from 'react-router-dom'
 import './StudentUnion.css'
+import {request} from '../../util'
 const {TextArea} = Input
-//mock data of newsletter
-const newsletter = [{
-    content:'test1'
-}]
-for(let i = 0; i < 10; i++) {
-    //push 10 mock newsletter inside the array
-    const tmp = {
-        content:"test" + (i+2)
-    }
-    newsletter.push(tmp)
-}
 class StudentUnion extends Component{
     constructor(props){
         super(props)
+        const {Manager} = props.params
+        const {newsletter} = Manager
         this.state = {
             newsletter,
             newsletterEditArr:newsletter.map((item)=> false),
@@ -127,5 +120,5 @@ class StudentUnion extends Component{
     }
 }
 
-export default ()=><StudentUnion></StudentUnion>
+export default ()=><StudentUnion params = {useOutletContext()}></StudentUnion>
 

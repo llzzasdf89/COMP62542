@@ -1,12 +1,14 @@
 import React,{Component} from 'react'
 import {Input, Card,Button,Modal, Divider, List} from 'antd'
+import { useOutletContext } from 'react-router-dom'
 import './AdmissionOffice.css'
 import StudentUnion from '../StudentUnion/StudentUnion'
+import {request} from '../../util'
 const {TextArea} = Input
 class AdmissionOffice extends Component{
 
    handleSubmit = ()=>{
-       const {reminder,reminderContentArea,reminderEditArr} = this.state
+       const {reminder,reminderContentArea} = this.state
         if(reminderContentArea.length === 0) return Modal.error({
             content:<div><p>At least you need to input reminder</p></div>
         })
@@ -16,46 +18,18 @@ class AdmissionOffice extends Component{
         Modal.success({
             content:<div><p>Send reminder success</p></div>
         })
-        reminderEditArr.push(false)
-        this.setState({
-            reminder,
-            reminderEditArr
-        })
-        return reminder
-   }
-   EditReminder = (index,e)=>{
-        const {reminder} = this.state
-        reminder[index].content = e.target.value
         this.setState({
             reminder
         })
-   }
-   enableEditReminder = (index)=>{
-    const {reminderEditArr} = this.state
-    reminderEditArr[index] = !reminderEditArr[index]
-    this.setState({
-        reminderEditArr
-    })
-   }
-   deleteReminder = (index) => {
-       const {reminderEditArr, reminder} = this.state
-       reminderEditArr.splice(index,1)
-       reminder.splice(index,1)
-       this.setState({
-           reminderEditArr,
-           reminder
-       })
+        return reminder
    }
    constructor(props){
         super(props)
-        const reminder = [
-            {content:'your deadline is 2022-05-02'},
-            {content:'your deadline is 2022-05-03'}
-        ]
+        const {Manager} = props.params
+        const reminder = Manager.reminder
         this.state = {
             reminderContentArea:'',
-            reminder,
-            reminderEditArr:reminder.map(()=> false),
+            reminder
     }
         }
 
@@ -69,35 +43,11 @@ class AdmissionOffice extends Component{
         <Card className='reminderArea' title='Edit Reminder' >
             <div className='reminderArea-list'>
             <List  
-            header="Reminder List"
+            header={<div style={{fontWeight:'bolder'}}>Reminder List</div>}
             dataSource={this.state.reminder}
-            renderItem = {(item,index)=>
-                <List.Item 
-                actions={[
-                <Button 
-                type='primary' 
-                shape='round' 
-                onClick={() => this.deleteReminder(index)}
-                >Delete</Button>, 
-                
-                <Button 
-                type='primary' 
-                shape='round' 
-                ghost = {this.state.reminderEditArr[index]}
-                onClick={()=>this.enableEditReminder(index)}
-                >Edit</Button>]}>
-                <Input 
-                        value={item.content} 
-                        bordered={this.state.reminderEditArr[index]} 
-                        disabled = {!this.state.reminderEditArr[index]}
-                        onInput = {(e)=>this.EditReminder(index,e)}
-                        style = {{
-                            overflow:'hidden',
-                            textOverflow:'ellipsis',
-                            whiteSpace:'nowrap'
-                        }}
-                        >
-                        </Input>
+            renderItem = {(item)=>
+                <List.Item>
+                {item.content}
                 </List.Item>
             }
             ></List>
@@ -115,5 +65,5 @@ class AdmissionOffice extends Component{
     }
 }
 
-export default ()=><AdmissionOffice></AdmissionOffice>
+export default ()=><AdmissionOffice params = {useOutletContext()}></AdmissionOffice>
 

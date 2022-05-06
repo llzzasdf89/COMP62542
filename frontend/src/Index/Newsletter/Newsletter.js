@@ -3,6 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import NotRegisteredTemplate from '../NotRegisteredTemplate'
 import {List, Button} from 'antd'
 import './Newsletter.css'
+import {request} from '../../util'
 class Newsletter extends Component{
     constructor(props){
         super(props)
@@ -29,6 +30,10 @@ class Newsletter extends Component{
         if(!iconArr[index].isGhost) {
             //this branch shows that student needs to subscribe the newsletter
             const {student} = this.state
+            const data = {
+                subscribeNewsletter:[student.newsletter[index].id]
+            }
+            request(data)
             student.newsletter[index].subscribed = true
             setTimeout(()=>{ //if button is subscribe
                 iconArr[index].text = 'unsubscribe'
@@ -42,6 +47,10 @@ class Newsletter extends Component{
             //unsubscribe
             const {student} = this.state
             student.newsletter[index].subscribed = false
+            const data = {
+                cancelNewsletter:[student.newsletter[index].id]
+            }
+            request(data)
             setTimeout(()=>{ //if button is unscribe
                 iconArr[index].text = 'subscribe'
                 iconArr[index].isLoading = false

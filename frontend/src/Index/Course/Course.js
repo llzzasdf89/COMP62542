@@ -4,31 +4,40 @@ import {Divider} from 'antd'
 import ListComponent from './listComponent'
 import { useOutletContext } from 'react-router-dom'
 import NotRegisteredTemplate from '../NotRegisteredTemplate'
+import {request} from '../../util'
 //Because mandatory Courses are static and will not change in the future,so these could be imported from timetable config file
 //filter out the Mandatory courses, this will only return the object lists. But when output on the screen, we need to return their title
 class Course extends Component{
-    handleClick = (course,request)=>{
+    handleClick = (course,Request)=>{
         /**
          * Handle click is a function to communicate with sub component "list"
          * The real actor is the subcomponent 'list'
          * Anyway, this function aims to control the 'delete' and 'add course' operation
          */
         const {student,optCourse,optCoursesAvailable} = this.state
-        if(request === 'delete'){
+        if(Request === 'delete'){
             let idx = -1;
             optCoursesAvailable.push(course) //delete optCourse is to add course to Available list
             optCourse.forEach((item,index) => {if(item.title === course.title) idx = index})
             optCourse.splice(idx,1) //meanwhile, delete the item from optCourse list
             student.course.forEach((item) => {if(course.title === item.title) course.type = 'Optional Available'})
+            const data = {
+                removeCourse:[student.id]
+            }
+            request(data)
             this.setState({student,optCourse,optCoursesAvailable}) //update the view
         }
-        else if (request === 'add'){
+        else if (Request === 'add'){
             //The adding logic is reversed from adding, which is adding list to optCourse, but delete from available list
             const {optCourse, optCoursesAvailable} = this.state
             optCourse.push(course)
             let idx = -1;
             optCoursesAvailable.forEach((item,index) => {if(item.title === course.title) idx = index})
             optCoursesAvailable.splice(idx,1)
+            const data = {
+                addCourse:[student.id]
+            }
+            request(data)
             student.course.forEach((item) => {if(course.title === item.title) course.type = 'Optional'})
             this.setState({student,optCourse,optCoursesAvailable}) //update the view
         }

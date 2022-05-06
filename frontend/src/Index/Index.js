@@ -90,9 +90,11 @@ class Index extends Component{
         menuItem.forEach((item)=>routeNameMap.set(item.path,'/' + item.key))
         this.routeNameMap = routeNameMap
         let student = defaultStudent;//default value is defaultStudent, preventing the value is empty
-        if(location.state) student= location.state.student
+        let Manager = null
+        if(location.state.student) student= location.state.student
+        if(location.state.Manager) Manager = location.state.Manager
         this.shouldRedirect = shouldRedirect(pathname)
-        this.state = {student} //bind it to the state object of React
+        this.state = {student,Manager} //bind it to the state object of React
         this.currentRoute =routeNameMap.get(pathname)
     }
     shouldComponentUpdate(nextProps){

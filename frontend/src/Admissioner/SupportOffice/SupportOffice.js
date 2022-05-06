@@ -1,54 +1,10 @@
 import React,{Component} from 'react'
 import {List, Card,Button} from 'antd'
 import CourseComponent from './CourseComponent/CourseComponent'
+import {useOutletContext} from 'react-router-dom'
 import './SupportOffice.css'
+import {request} from '../../util'
 //mock data
-const student = [
-    {
-        name:'Zhi Li',
-        studentID:'10846881',
-        course:[
-            {
-                title:'Software Engineering',
-                startTime:"2022-05-02T09:00:00",
-                endTime:'2022-05-02T11:00:00',
-                type:'Mandatory'
-            },
-            {
-                title:'Querying Data on the Web',
-                startTime:'2022-05-04T15:00:00',
-                endTime:'2022-05-04T17:00:00',
-                type:'Optional',
-                department:"Mathematics"
-            },
-            {
-                title:'Modelling data on the web',
-                startTime:'2022-05-05T15:00:00',
-                endTime:'2022-05-05T17:00:00',
-                type:'Optional Available',
-                department:"Computer Science"
-            }
-        ],
-    },
-    {
-        name:'WX',
-        studentID:'1000086',
-        course:[]
-    },
-    {
-        name:'Test Student 2',
-        studentID:'10000087',
-        course:[
-            {
-                title:'Querying Data on the Web',
-                startTime:'2022-05-04T15:00:00',
-                endTime:'2022-05-04T17:00:00',
-                type:'Optional',
-                department:"Mathematics"
-            }
-        ]
-    }
-]
 const course = [
     {
         title:'Software Engineering',
@@ -88,19 +44,19 @@ const course = [
 class SupportOffice extends Component{
     //function which receives course and update it according to the query
     updateCourseList = (courseObj,studentIndex,query)=>{
-        const {student} = this.state
+        const {students} = this.state
         if(query === 'add'){
-            student[studentIndex].course.push(courseObj)
+            students[studentIndex].course.push(courseObj)
         }
         else if (query === 'delete'){
-            student[studentIndex].course.forEach(
+            students[studentIndex].course.forEach(
                 (item,index) =>{
-                    if(item.title === courseObj.title) return student[studentIndex].course.splice(index,1)
+                    if(item.title === courseObj.title) return students[studentIndex].course.splice(index,1)
                 }
             ) //use for Each to traverse all the course list, to find the one to be removed and remove it
         }
         this.setState({
-            student
+            students
         })//update UI
     }
     //Control the subpage's display
@@ -114,10 +70,12 @@ class SupportOffice extends Component{
         })
     }
     constructor(props){
-        super(props)        
+        super(props)
+        const {Manager} = props.params
+        const {students} = Manager
         this.state = {
             coursePool:course,
-            student,
+            students,
             studentView:false,
             studentIndex:0,
         }
@@ -127,7 +85,7 @@ class SupportOffice extends Component{
         let template = <Card title="Student List">
 
         <List 
-        dataSource={this.state.student}
+        dataSource={this.state.students}
         renderItem = {
         (student,index) => 
         <List.Item 
@@ -142,7 +100,7 @@ class SupportOffice extends Component{
         //Course component is a encapsulated component in the sub directory
         template =  <CourseComponent 
         studentIndex = {this.state.studentIndex}
-        currentStudent = {this.state.student[this.state.studentIndex]}
+        currentStudent = {this.state.students[this.state.studentIndex]}
         coursePool = {this.state.coursePool} 
         updateCourseList = {this.updateCourseList}
         switchView={this.switchView}></CourseComponent>
@@ -150,5 +108,5 @@ class SupportOffice extends Component{
     }
 }
 
-export default ()=><SupportOffice></SupportOffice>
+export default ()=><SupportOffice params = {useOutletContext()}></SupportOffice>
 

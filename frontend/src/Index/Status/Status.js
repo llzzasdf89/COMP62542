@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import './Status.css'
+import {request} from '../../util'
 import {Card,Button} from 'antd'
 import { useOutletContext } from 'react-router-dom'
 const {Meta} = Card
@@ -8,9 +9,17 @@ class Status extends Component{
         const {student} = this.state
         if(student.status === 'unregistered') {
             student.status  = 'pending'
+            const data = {
+                'registration':[student.id]
+            }
+            request(data)
             this.setState({student})
         }
         else if(student.status === 'pending') {
+            const data = {
+                'pay':[student.id]
+            }
+            request(data)
             student.status  = 'registered'
             this.setState({student})
         }

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Input,Button, Modal} from 'antd'
 import {UserOutlined} from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import {request} from '../util'
 import './Login.css'
 
 class Login extends Component {
@@ -14,72 +15,111 @@ class Login extends Component {
     handleSubmit = e=>{
         //handle the submission event, validate the input from user
         const input = this.state.inputValue;
-        if(input.length !== 8) {
+        if(input.length <= 1) {
             return Modal.error({
-                content:<div><p>Please input a 8 digit number</p></div>
+                content:<div><p>Please input a 1 digit number</p></div>
             })
         }
-        const defaultStudent = {
-            name:'RichardZhiLi',
-            studentID:input,
-            status:'unregistered',
-            course:[
-                {
-                    title:'Software Engineering',
-                    startTime:"2022-05-02T09:00:00",
-                    endTime:'2022-05-02T11:00:00',
-                    type:'Mandatory'
-                },
-                {
-                    title:'Querying Data on the Web',
-                    startTime:'2022-05-04T15:00:00',
-                    endTime:'2022-05-04T17:00:00',
-                    type:'Optional',
-                    department:"Mathematics"
-                },
-                {
-                    title:'Modelling data on the web',
-                    startTime:'2022-05-05T15:00:00',
-                    endTime:'2022-05-05T17:00:00',
-                    type:'Optional Available',
-                    department:"Computer Science"
-                }
-            ],
-            activities:[
-                {
-                    id:1,
-                    type:'Tutorial',
-                    startTime:"2022-05-02T09:00:00",
-                    endTime:'2022-05-02T11:00:00',
-                    course:this.course[0].title
-                },
-                {
-                    id:2,
-                    type:'Supervision Meeting',
-                    startTime:"2022-05-02T09:00:00",
-                    endTime:'2022-05-02T11:00:00',
-                    course:this.course[1].title
-                }
-            ],
-            newsletter:[{
-                    title:'1111',
-                    content:'HHHHH',
-                    subscribed:false
-            }],
-            reminder:'Your deadline of payment is 2022-05-09, please notice'
+        const {navigate} = this
+        const params = {
+            login:[input]
         }
-        this.setState({student:defaultStudent},()=>{
-            const {navigate,state} = this
-            navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
-        }) //setState is a asynchronous function, if we need to pass the data to the next page, we need to write it in the callback function
+        request(params)
+        navigate('/index',{state:this.state,replace:true})
+    }
+    switchToAdmission = ()=>{
+        const {navigate} = this
+        const params = {
+            Admissioner:null
+        }
+        request(params).then((resolveObj)=>{
+            this.setState(({
+                Manager:{
+                    reminder : [
+                        {content:'your deadline is 2022-05-02'},
+                        {content:'your deadline is 2022-05-03'}
+                    ],
+                    newsletter:[{
+                        content:'test1'
+                    }],
+                    students:[
+                        {name:'Richard'},
+                        {name:'Test Student 1'},
+                        {name:'Test Student 2'}
+                    ],
+                }
+            }),()=>{
+                navigate('/Admissioner',{state:this.state})
+            })
+        },(rejectObj)=>{
+            this.setState(({
+                Manager:{
+                    reminder : [
+                        {content:'your deadline is 2022-05-02'},
+                        {content:'your deadline is 2022-05-03'}
+                    ],
+                    newsletter:[{
+                        content:'test1'
+                    }],
+                    students:[
+                        {
+                            name:'Zhi Li',
+                            studentID:'10846881',
+                            course:[
+                                {
+                                    title:'Software Engineering',
+                                    startTime:"2022-05-02T09:00:00",
+                                    endTime:'2022-05-02T11:00:00',
+                                    type:'Mandatory'
+                                },
+                                {
+                                    title:'Querying Data on the Web',
+                                    startTime:'2022-05-04T15:00:00',
+                                    endTime:'2022-05-04T17:00:00',
+                                    type:'Optional',
+                                    department:"Mathematics"
+                                },
+                                {
+                                    title:'Modelling data on the web',
+                                    startTime:'2022-05-05T15:00:00',
+                                    endTime:'2022-05-05T17:00:00',
+                                    type:'Optional Available',
+                                    department:"Computer Science"
+                                }
+                            ],
+                        },
+                        {
+                            name:'WX',
+                            studentID:'1000086',
+                            course:[]
+                        },
+                        {
+                            name:'Test Student 2',
+                            studentID:'10000087',
+                            course:[
+                                {
+                                    title:'Querying Data on the Web',
+                                    startTime:'2022-05-04T15:00:00',
+                                    endTime:'2022-05-04T17:00:00',
+                                    type:'Optional',
+                                    department:"Mathematics"
+                                }
+                            ]
+                        }
+                    ],
+                }
+            }),()=>{
+                navigate('/Admissioner',{state:this.state})
+            })
+        })
+
     }
     constructor(props){
         super(props)
         //bind the navigation method to the global instance 
         this.navigate = props.navigate
         this.state = {
-            inputValue:'',
-            student:null
+            inputValue:''
         }
     }
     render(){
@@ -113,7 +153,7 @@ class Login extends Component {
         block 
         type='primary' 
         shape='round'
-        href='/Admissioner'
+        onClick={this.switchToAdmission}
         >
         Click here if you are admissioner
         </Button>

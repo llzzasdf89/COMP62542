@@ -25,20 +25,23 @@ class CourseComponent extends Component {
         type='link' 
         shape='round' 
         size='small' 
-        onClick={()=>this.switchView(this.state.studentIndex)}></Button> 
+        onClick={()=>this.switchView(this.props.currentStudentInfo.studentIndex)}></Button> 
         </div>
-        <div>course list of {this.state.currentStudent.name}</div>
+        <div>course list of {this.props.currentStudentInfo.currentStudent.name}</div>
         </div>} >
             <div className='studentCourseList'>
-            <Divider orientation="center">Courses of {this.state.currentStudent.name}</Divider>
+            <Divider orientation="center">Courses of {this.props.currentStudentInfo.currentStudent.name}</Divider>
             <List 
-            dataSource={this.state.currentStudent.course}
+            dataSource={this.props.currentStudentInfo.currentStudent.courses}
             renderItem = {
-                (course) =>
-                <List.Item actions={[<Button type='primary' shape='round' onClick={()=>this.updateCourseList(course,this.state.studentIndex,'delete')}>Delete</Button>]}>
-                {course.title}
+                (course) =>{
+                    if(Array.isArray(course)) return 
+                    return <List.Item actions={[<Button type='primary' shape='round' onClick={()=>this.updateCourseList(course,this.props.currentStudentInfo.studentIndex,'delete')}>Delete</Button>]}>
+                    {course.name}
                     
-                </List.Item>
+                     </List.Item>
+                }
+                
             }
             >
             </List>
@@ -47,12 +50,12 @@ class CourseComponent extends Component {
             <div className='coursePoolList'>
             <Divider orientation="center">Course Available</Divider>
             <List 
-            dataSource={this.state.coursePool}
+            dataSource={this.props.currentStudentInfo.coursePool}
             renderItem = {
                 item=>{
-                    const {courses} = this.state.currentStudent //get the course which the student already has
+                    const {courses} = this.props.currentStudentInfo.currentStudent//get the course which the student already has
                     if(courses.some((i) => i.courseNum === item.courseNum)) return
-                    else return <List.Item actions = {[<Button type='primary' shape='round' onClick={()=>this.updateCourseList(item,this.state.studentIndex,'add')}>Add</Button>]}>{item.name}</List.Item>
+                    else return <List.Item actions = {[<Button type='primary' shape='round' onClick={()=>this.updateCourseList(item,this.props.currentStudentInfo.studentIndex,'add')}>Add</Button>]}>{item.name}</List.Item>
                 }
             }>
             </List>

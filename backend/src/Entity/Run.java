@@ -40,27 +40,27 @@ public class Run {
         OptCourse c1 = new OptCourse("c1","OPT1","CS","OPT","Mon","09:00:00","10:00:00");
 
         OptCourse c2 = new OptCourse("c2","OPT1","CS","OPT","Mon","11:00:00","12:00:00");
-        OptCourse c3 =new OptCourse("c3","C3","CS","M1","Mon","14:00:00","16:00:00");
+        OptCourse c3 =new OptCourse("c3","C3","CS","MAN","Mon","14:00:00","16:00:00");
 
 
         c1.addSubActivity(c3);
 
         try {
-            //启动服务器的主要方法是通过引入HttpServer这个类，这个类在com.sun.net包下
+
             HttpServer server = HttpServer.create(new InetSocketAddress(8001),0);
-            System.out.println("Running the server on the port 8001");//假设我们的服务器运行在8001端口
-            //createContext API 是HttpServer类的一个关键API，它主要负责处理的是路由
-            //下面这句话的意思是要监听/test这个路由下的请求，实施监听的对象是这个叫做TestHandler的对象
+            System.out.println("Running the server on the port 8001");
+
+
             server.createContext("/",new TestHandler());
-            server.start();//启动服务器的指令
+            server.start();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
     }
 
     static class TestHandler implements HttpHandler{
-        //注意重写Handler的时候最主要的事情就是重写这个Handle方法
+
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             StudentDao studentDao = new StudentDao();
@@ -94,8 +94,8 @@ public class Run {
                     allInfo.element("students",studentDao.getStudentJson());
                     allInfo.element("courses",courseDao.getAllCourseJson());
                     allInfo.element("newsletters",newsletterJson);
-                    exchange.sendResponseHeaders(200, allInfo.toString().getBytes().length);//然后是设置响应的代码，默认我们为200，第二个参数是这个响应的数据的长度
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    exchange.sendResponseHeaders(200, allInfo.toString().getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write(allInfo.toString().getBytes());
                         os.flush();
                     }
@@ -107,8 +107,8 @@ public class Run {
                     System.out.println("login request");
                     JSONObject student  = studentDao1.getStudentInfo(Long.parseLong(command[1]));
                     System.out.println(student);
-                    exchange.sendResponseHeaders(200, student.toString().getBytes().length);//然后是设置响应的代码，默认我们为200，第二个参数是这个响应的数据的长度
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    exchange.sendResponseHeaders(200, student.toString().getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write(student.toString().getBytes());
                         os.flush();
                     }catch (EOFException e){
@@ -124,7 +124,7 @@ public class Run {
                     }
                     String b = "true";
                     exchange.sendResponseHeaders(200,b.getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write(b.getBytes());
                         os.flush();
                     }
@@ -138,7 +138,7 @@ public class Run {
                     }
                     String c = "true";
                     exchange.sendResponseHeaders(200,c.getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write(c.getBytes());
                         os.flush();
                     }
@@ -161,7 +161,7 @@ public class Run {
                         }
                         String d= "true";
                         exchange.sendResponseHeaders(200,d.getBytes().length);
-                        try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        try(OutputStream os = exchange.getResponseBody()) {
                             os.write(d.getBytes());
                             os.flush();
                         }
@@ -178,7 +178,7 @@ public class Run {
                         }
                     }
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -188,7 +188,7 @@ public class Run {
                     Reminder reminder = new Reminder(command[1],command[2]);
                     studentAdmissionsOffice.sendReminder(reminder);
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -201,7 +201,7 @@ public class Run {
                         }
                     }
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -218,7 +218,7 @@ public class Run {
                         }
                     }
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -234,7 +234,7 @@ public class Run {
                         }
                     }
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -244,7 +244,7 @@ public class Run {
                     Newsletter n = new Newsletter(command[1],command[2]);
                     studentUnion.addNewsletter(n);
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }
@@ -257,7 +257,7 @@ public class Run {
                         }
                     }
                     exchange.sendResponseHeaders(200,"true".getBytes().length);
-                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                    try(OutputStream os = exchange.getResponseBody()) {
                         os.write("true".getBytes());
                         os.flush();
                     }

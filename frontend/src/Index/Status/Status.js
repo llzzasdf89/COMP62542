@@ -9,10 +9,10 @@ class Status extends Component{
         const {student} = this.state
         if(student.status === 'notRegistered') {
             student.status  = 'pending'
-            const data = {
+            const params = {
                 'registration':[student.uniNum]
             }
-            request(data).then((resolved)=>{
+            request(params).then((resolved)=>{
                 if(resolved === 'true'){ //means the status is changed successfully
                     return student.status ='pending'
                 }
@@ -27,10 +27,10 @@ class Status extends Component{
             this.setState({student})
         }
         else if(student.status === 'pending') {
-            const data = {
+            const params = {
                 'pay':[student.uniNum]
             }
-            request(data).then((resolved)=>{
+            request(params).then((resolved)=>{
                 if(resolved === 'true'){ //means the status is changed successfully
                     return student.status ='registered'
                 }
@@ -49,8 +49,11 @@ class Status extends Component{
     constructor(props){
         super(props)
         const {student} = props
-        this.reminder = student.reminder
+        const reminders = student.student.reminders;
         this.state = student
+        //set reminder if there is 
+        if(reminders && reminders.length > 0) this.reminder = reminders[reminders.length -1].content;
+        else this.reminder = ''
     }
     render(){
         const statusTemplate = {
@@ -79,7 +82,7 @@ class Status extends Component{
                 </div>,
                 components:
                 <div>
-                    <p>{this.state.student.reminder}</p>
+                    <p>{this.reminder}</p>
                     <p>Now you may want to </p>
                     <Button type='primary' shape='round' onClick={this.handleClick}>pay the fees</Button>
                 </div>

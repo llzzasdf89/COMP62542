@@ -2,11 +2,6 @@ package Entity;
 import java.util.ArrayList;
 //Concrete Container in Iterator Pattern
 public class Data implements DataContainer{
-    /**
-     * Mock data:
-     * Students is the list of all the students;
-     * Courses is the list of all the Courses in this system;
-     */
     private static Data data = new Data();
     private ArrayList<Student> Students = new ArrayList<Student>();
     private ArrayList<Course> Courses= new ArrayList<Course>();

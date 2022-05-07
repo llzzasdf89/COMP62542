@@ -25,9 +25,8 @@ class Login extends Component {
             login:[input]
         }
         request(params).then((data)=>{
-            console.log(data)
-            data = JSON.parse(data);
-            console.log(data)
+            data = JSON.parse(data)
+            console.log('student',data)
             this.setState({
                 student:data
             },()=>{

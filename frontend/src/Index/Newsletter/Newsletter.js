@@ -11,7 +11,6 @@ class Newsletter extends Component{
         //loadings array, used for control the icon beside the list item
         const iconArr = student.allNewsletters.map((item)=>{
             const isSubscribed = student.newsletters.some((i)=>i.id===item.id)
-            console.log(isSubscribed)
             if(isSubscribed){
                 return {
                     text:'unsubscribe',
@@ -29,7 +28,7 @@ class Newsletter extends Component{
         }) //generate the same numbers with the newsletter
         this.state = {
             student,
-            iconArr
+            iconArr //control the display of button in the UI
         }
     }
     handleClick = (index) =>{
@@ -41,15 +40,20 @@ class Newsletter extends Component{
         if(!iconArr[index].isGhost) {
             //this branch shows that student needs to subscribe the newsletter
             const data = {
-                subscribeNewsletter:[student.uniNum,student.newsletters[index].id]
+                subscribeNewsletter:[student.uniNum,student.allNewsletters[index].id]
             }
             request(data).then((resolve)=>{
                 if(resolve === 'true'){//request success
                     student.newsletters.push(student.allNewsletters[index])
-                    iconArr[index].text = 'unsubscribe'
-                    iconArr[index].isLoading = false
-                    iconArr[index].isGhost = true
-                    return; 
+                    setTimeout(()=>{
+                        iconArr[index].text = 'unsubscribe'
+                        iconArr[index].isLoading = false
+                        iconArr[index].isGhost = true
+                        return this.setState({
+                            iconArr,
+                            student
+                        }); 
+                    },1500)
                 }
                 iconArr[index].text = 'subscribe'
                 iconArr[index].isGhost = false
@@ -67,7 +71,7 @@ class Newsletter extends Component{
             //unsubscribe
             const {student} = this.state
             const data = {
-                cancelNewsletter:[student.uniNum,student.newsletters[index].id]
+                cancelNewsletter:[student.uniNum,student.allNewsletters[index].id]
             }
             request(data).then((resolved)=>{
                 if(resolved === 'true'){
@@ -77,10 +81,15 @@ class Newsletter extends Component{
                         if(item.id === subscribedNewsletter.id) indexInAllNewsletter = idx;
                     })
                     student.newsletters.splice(indexInAllNewsletter,1) //remove the subscribed newsletter from the list
-                    iconArr[index].isLoading = false;
-                    iconArr[index].isGhost = false;
-                    iconArr[index].text = 'subscribe'
-                    return ;
+                    setTimeout(()=>{
+                        iconArr[index].text = 'subscribe'
+                        iconArr[index].isLoading = false
+                        iconArr[index].isGhost = false
+                        return this.setState({
+                            iconArr,
+                            student
+                        }); 
+                    },1500)
                 }
                 iconArr[index].isLoading = false;
                 iconArr[index].isGhost = true;

@@ -14,25 +14,37 @@ import java.util.ArrayList;
 public abstract class Course {
     private String courseNum;
     private String name;
-    public String time;
+    public String day;
+    public String startTime;
+    public String endTime;
+
     private String courseType;
     private ArrayList<Course> subActivities = new ArrayList<Course>();
     private ArrayList<Student> students = new ArrayList<Student>();
     public static ArrayList<Course> courses = new ArrayList<>();
 
-    public Course(String courseNum, String name, String courseType, String time) {
+    public Course(String courseNum, String name, String courseType, String day,String startTime,String endTime) {
         this.courseNum = courseNum;
         this.name = name;
-        this.time = time;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.courseType = courseType;
         courses.add(this);
     }
-    public Course(){}
     abstract void initateCourse(); //template method, needs to be override by ManCourse and OptCourse
     public void setCourseNum(String courseNum) {
         this.courseNum = courseNum;
     }
 
+    public void setStartTime(String startTime){
+        this.startTime = startTime;
+    }
+    public String getStartTime(){return this.startTime;}
+    public void setEndTime(String endTime){
+        this.endTime = endTime;
+    }
+    public String getEndTime(){return this.endTime;}
     public String getCourseNum() {
         return courseNum;
     }
@@ -53,11 +65,11 @@ public abstract class Course {
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.day = time;
     }
 
     public String getTime() {
-        return time;
+        return day;
     }
 
     public void addStudent(Student student) {

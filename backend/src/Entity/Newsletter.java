@@ -7,7 +7,7 @@ public class Newsletter {
     private String newsNum;
     private ArrayList<Student> subscribers = new ArrayList<Student>();
 
-    public Newsletter(String content, String newsNum) {
+    public Newsletter(String newsNum, String content) {
         this.content = content;
         this.newsNum = newsNum;
         newsletters.add(this);

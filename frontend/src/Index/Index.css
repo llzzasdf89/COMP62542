@@ -1,19 +1,37 @@
-.layoutContainer{
-    height:100vh;
-    overflow: hidden;
+*{
+    font-family:"Microsoft Yahei";
+    font-size:15px;
 }
-.contentContainer{
-    padding:0 50px;
+.layoutContainer{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height:100vh;
 }
 .contentContainer-contentBox{
     height:100%;
     padding: 24px;
-    background: #fff
+    background: #fff;
+    overflow: hidden;
+}
+.headerContainer{
+    height:10vh;
 }
 /* header-menu and ant-menu-item are CSS classes from ant-design framework*/
 .header-menu{
-    text-align: center;
+    height:100%; /* let the menu fill up the whole headerContainer*/
 }
-.ant-menu-item {
- flex-grow: 1;
+.header-menu li {
+    display: flex !important; /*Override the style of menu item*/
+    justify-content: center;
+    align-items: center;
+}
+.contentContainer{
+    zoom:0.7;
+    padding:0 50px;
+    display: flex;
+    flex-direction: column;;
+}
+.footerContainer{
+    z-index: 1000;
 }

@@ -88,7 +88,7 @@ public class NewsletterDao {
                 JSONObject newsletter = new JSONObject();
 
                 newsletter.element("content",rs.getString("content"));
-                newsletter.element("newsNum",rs.getString("newsNum"));
+                newsletter.element("id",rs.getString("newsNum"));
                 newslettersJson.add(newsletter);
 
 

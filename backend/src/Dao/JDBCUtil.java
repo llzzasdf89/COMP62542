@@ -20,6 +20,7 @@ public class JDBCUtil {
         return con;
     }
 
+
     //close connection if there is a result
     public static void closeConn(Connection conn, Statement stmt, ResultSet rs){
         if(rs != null){

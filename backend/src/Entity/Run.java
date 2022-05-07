@@ -32,11 +32,17 @@ import net.sf.json.JsonConfig;
 public class Run {
 
     public static void main(String[] args) {
+        StudentDao studentDao  = new StudentDao();
+        studentDao.deleteTables();
+
         Student s1 = new Student(1,"a");
         Student s2 = new Student(2,"b");
-        OptCourse c1 = new OptCourse("c1","OPT1","CS","OPT","Mon");
-        OptCourse c2 = new OptCourse("c2","OPT1","CS","OPT","Mon");
-        OptCourse c3 =new OptCourse("c3","C3","CS","M1","Mon");
+        OptCourse c1 = new OptCourse("c1","OPT1","CS","OPT","Mon","09:00:00","10:00:00");
+
+        OptCourse c2 = new OptCourse("c2","OPT1","CS","OPT","Mon","11:00:00","12:00:00");
+        OptCourse c3 =new OptCourse("c3","C3","CS","M1","Mon","14:00:00","16:00:00");
+
+
         c1.addSubActivity(c3);
 
         try {
@@ -45,7 +51,7 @@ public class Run {
             System.out.println("Running the server on the port 8001");//假设我们的服务器运行在8001端口
             //createContext API 是HttpServer类的一个关键API，它主要负责处理的是路由
             //下面这句话的意思是要监听/test这个路由下的请求，实施监听的对象是这个叫做TestHandler的对象
-            server.createContext("/test",new TestHandler());
+            server.createContext("/",new TestHandler());
             server.start();//启动服务器的指令
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -96,12 +102,17 @@ public class Run {
                     break;
 
                 case "login":
-                    JSONObject student = studentDao.getStudentInfo(Long.parseLong(command[1]));
+                    System.out.println("get command");
+                    StudentDao  studentDao1 = new StudentDao();
                     System.out.println("login request");
+                    JSONObject student  = studentDao1.getStudentInfo(Long.parseLong(command[1]));
+                    System.out.println(student);
                     exchange.sendResponseHeaders(200, student.toString().getBytes().length);//然后是设置响应的代码，默认我们为200，第二个参数是这个响应的数据的长度
                     try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
                         os.write(student.toString().getBytes());
                         os.flush();
+                    }catch (EOFException e){
+                        e.printStackTrace();
                     }
                     break;
                 case "registration":
@@ -156,8 +167,6 @@ public class Run {
                         }
                     }
                     break;
-
-
                 case "cancelNewsletter":
                     for (Student s: Student.students) {
                         if (s.getUniNum()==Long.parseLong(command[1])){
@@ -168,11 +177,21 @@ public class Run {
                             }
                         }
                     }
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
+                    }
                     break;
 
                 case "admissionSendReminder":
                     Reminder reminder = new Reminder(command[1],command[2]);
                     studentAdmissionsOffice.sendReminder(reminder);
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
+                    }
                     break;
 
                 case "deleteNewsletter":
@@ -180,6 +199,11 @@ public class Run {
                         if (n.getNewsNum().equals(command[1])) {
                             studentUnion.deleteNewsletter(n);
                         }
+                    }
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
                     }
                     break;
 
@@ -193,6 +217,11 @@ public class Run {
                             }
                         }
                     }
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
+                    }
                     break;
                 case "removeCourse":
                     for (Student s: Student.students) {
@@ -204,18 +233,21 @@ public class Run {
                             }
                         }
                     }
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
+                    }
                     break;
                 //case "supportSendReminder":
                 case "addNewsletter":
                     Newsletter n = new Newsletter(command[1],command[2]);
                     studentUnion.addNewsletter(n);
-                    String d = "add";
-                    exchange.sendResponseHeaders(200,d.getBytes().length);
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
                     try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
-                        os.write(d.getBytes());
+                        os.write("true".getBytes());
                         os.flush();
                     }
-                    System.out.println(Newsletter.newsletters);
                     break;
 
                 case "updateNewsletter":
@@ -224,9 +256,16 @@ public class Run {
                             studentUnion.updateNewsletter(n1,command[2]);
                         }
                     }
+                    exchange.sendResponseHeaders(200,"true".getBytes().length);
+                    try(OutputStream os = exchange.getResponseBody()) {//请求头发送完后就是发送数据内容了,使用IO对象进行发送
+                        os.write("true".getBytes());
+                        os.flush();
+                    }
                     break;
             }
             exchange.close();
         }
     }
+
+
 }

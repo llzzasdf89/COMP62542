@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Input,Button, Modal} from 'antd'
 import {UserOutlined} from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import {request} from '../util'
 import './Login.css'
 
 class Login extends Component {
@@ -14,14 +15,51 @@ class Login extends Component {
     handleSubmit = e=>{
         //handle the submission event, validate the input from user
         const input = this.state.inputValue;
-        if(input.length !== 8) {
+        if(input.length < 1) {
             return Modal.error({
-                content:<div><p>Please input a 8 digit number</p></div>
+                content:<div><p>Please input a 1 digit number</p></div>
             })
         }
-        this.setState({inputValue:input})
-        const {navigate,state} = this
-        navigate('/index',{replace:true,state}) //through the navigation function to pass communication with other component
+        const {navigate} = this
+        const params = {
+            login:[input]
+        }
+        request(params).then((data)=>{
+            console.log(data)
+            data = JSON.parse(data);
+            console.log(data)
+            this.setState({
+                student:data
+            },()=>{
+                navigate('/Index',{
+                    state:this.state
+                })
+            })
+        },()=>{
+
+        })
+    }
+    switchToAdmission = ()=>{
+        //this function controls the display of admission view
+        const {navigate} = this
+        const params = {
+            Admissioner:null
+        }
+        request(params).then((data)=>{
+                data = JSON.parse(data) //request sucess, receive data from server
+                this.setState({
+                    Manager:data
+                },()=>{
+                    navigate('/Admissioner',{
+                        state:this.state
+                    })
+                })
+        },()=>{//request failed , directly return
+           return Modal.error({
+               content:"Communication with server error, please check server"
+           })
+        })
+
     }
     constructor(props){
         super(props)
@@ -35,6 +73,7 @@ class Login extends Component {
         const layout = 
         <div className='layout'>
             <div className='loginContainer'>
+        <div className='loginContainer-inputArea'>
         <Input 
         placeholder='Input your unique number here' 
         type='number'
@@ -45,6 +84,8 @@ class Login extends Component {
         prefix={<UserOutlined></UserOutlined>}
         >
         </Input>
+        </div>
+        <div className='loginContainer-ButtonArea'>
         <Button 
         type ='primary' 
         shape="round" 
@@ -55,6 +96,15 @@ class Login extends Component {
         >
         Submit
         </Button>
+        <Button 
+        block 
+        type='primary' 
+        shape='round'
+        onClick={this.switchToAdmission}
+        >
+        Click here if you are admissioner
+        </Button>
+        </div>
             </div>
         </div>
         return layout

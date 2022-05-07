@@ -42,7 +42,6 @@ public class StudentAdmissionsOffice implements Office, StudentVisitor {
 
     @Override
     public void visitStudent(Student student, Course course, String request) {
-        System.out.println("Admission Office is not able to visit student's courses");
     }
 
     @Override

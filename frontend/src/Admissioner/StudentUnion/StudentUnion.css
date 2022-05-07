@@ -1,0 +1,14 @@
+.studentunionContainer{
+    width: 100%;
+    height:100%;
+    display: flex;
+    justify-content: space-between;
+}
+.leftArea {
+    width:50%;
+    height: 35rem;
+}
+.rightArea{
+    width:50%;
+    height: 35rem;
+}

@@ -10,6 +10,40 @@ import net.sf.json.JSONObject;
 
 
 public class StudentDao {
+    public  void deleteTables(){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "delete from courses";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from students";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from reminder";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from subactivities";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from courseselection";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from newsletter";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+            sql = "delete from newsletterselection";
+            stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConn(conn, stmt);
+        }
+
+    }
 
     public void newStudent(long uniNum, String name) {
         Connection conn = null;
@@ -27,6 +61,32 @@ public class StudentDao {
             JDBCUtil.closeConn(conn, stmt);
         }
     }
+    public JSONArray getNewsletters(long uniNum) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        JSONArray jsonArray = new JSONArray();
+
+
+        try {
+            conn = JDBCUtil.getConn();
+            String sql = "select * from newsletter where newsNum in (select newsNum from newsletterselection where uniNum = ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, uniNum);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                JSONObject newsletter = new JSONObject();
+                newsletter.element("id", resultSet.getString("newsNum"));
+                newsletter.element("content",resultSet.getString("content"));
+                jsonArray.add(newsletter);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.closeConn(conn, stmt);
+        }
+        return jsonArray;
+    }
 
 
     //get student information
@@ -43,6 +103,7 @@ public class StudentDao {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, uniNum);
             ResultSet resultSet = stmt.executeQuery();
+
             while (resultSet.next()) {
                 uniNum = resultSet.getLong("uniNum");
                  name = resultSet.getString("studentName");
@@ -61,6 +122,13 @@ public class StudentDao {
         studentInfo.element("name",name);
         studentInfo.element("status",studentState);
         studentInfo.element("courses",studentService.showTimeTable(uniNum));
+        studentInfo.element("newsletters",getNewsletters(uniNum));
+        ReminderDao reminderDao1 = new ReminderDao();
+        studentInfo.element("reminders",reminderDao1.getReminderJson());
+
+        NewsletterDao newsletterDao1 = new NewsletterDao();
+        JSONArray newsletterJson1 = newsletterDao1.getAllNewsletters();
+        studentInfo.element("allNewsletters",newsletterJson1);
         return studentInfo;
     }
 
@@ -175,7 +243,13 @@ public class StudentDao {
                     String department = rs1.getString("department");
                     String courseType = rs1.getString("courseType");
                     String day = rs1.getString("day");
-                    Course course = new OptCourse(courseNum, name, department, courseType, day);
+                    String startTime = rs1.getString("startTime");
+                    String endTime = rs1.getString("endTime");
+
+
+
+                    Course course = new OptCourse(courseNum, name, department, courseType, day,startTime,endTime
+                    );
                     subActivity.add(course);
                 }
             }
@@ -233,64 +307,6 @@ public class StudentDao {
     }
 
     //find newsletter subscribe results from the database according to the UniNum
-    public ArrayList<Newsletter> getNewsSelection(Long uniNum) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        ArrayList<Newsletter> newsletters = new ArrayList<>();
-
-        try {
-            conn = JDBCUtil.getConn();
-            String sql = "select * from newsletterselection where uniNum = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, uniNum);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                String newsNum = rs.getString("newsNum");
-                String sql1 = "select * from newsletter where newsNum = ?";
-                PreparedStatement stmt1 = conn.prepareStatement(sql1);
-                stmt1.setString(1, newsNum);
-                ResultSet rs1 = stmt1.executeQuery();
-                while(rs1.next()) {
-                    String content = rs1.getString("content");
-                    Newsletter newsletter = new Newsletter(content,newsNum);
-                    newsletters.add(newsletter);
-                    System.out.println(newsletter.getNewsNum());
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCUtil.closeConn(conn, stmt, rs);
-        }
-        return newsletters;
-    }
-
-    //check the status
-    public String getState(Long findUniNum) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        String state = null;
-        try {
-            conn = JDBCUtil.getConn();
-            String sql = "select studentState from students where uniNum = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, findUniNum);
-            ResultSet resultSet = stmt.executeQuery();
-            while (resultSet.next()) {
-                state = resultSet.getString("studentState");
-                System.out.println(state);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            JDBCUtil.closeConn(conn, stmt);
-        }
-        System.out.println("check state");
-        return state;
-    }
-
 
     //change the registration status
     public void changeStatus(Long uniNum, String studentState) {

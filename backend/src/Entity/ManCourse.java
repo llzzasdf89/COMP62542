@@ -14,8 +14,8 @@ public class ManCourse extends Course {
         subActivities.remove(course);
     }
 
-    public ManCourse(String courseNum, String name, String courseType, String time) {
-        super(courseNum, name, courseType, time);
+    public ManCourse(String courseNum, String name, String courseType, String day,String startTime,String endTime) {
+        super(courseNum, name, courseType, day,startTime,endTime);
         CourseDao courseDao  =new CourseDao();
         courseDao.addCourse(this);
     }

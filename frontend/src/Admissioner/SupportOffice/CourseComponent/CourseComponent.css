@@ -1,0 +1,9 @@
+.titleArea{
+    display: flex;   
+}
+.studentCourseList{
+    flex-basis: 50%;
+}
+.coursePoolList{
+    flex-basis: 50%;
+}

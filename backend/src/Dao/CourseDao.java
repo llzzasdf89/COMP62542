@@ -16,12 +16,14 @@ public class CourseDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConn();
-            String sql = "insert into courses(courseNum,name,courseType,day) values(?,?,?,?)";
+            String sql = "insert into courses(courseNum,name,courseType,day,startTime,endTime) values(?,?,?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getCourseNum());
             stmt.setString(2, course.getName());
             stmt.setString(3, course.getCourseType());
             stmt.setString(4, String.valueOf(course.getTime()));
+            stmt.setString(5,course.startTime);
+            stmt.setString(6,course.endTime);
             stmt.executeUpdate();
         }
         catch (SQLException e) {

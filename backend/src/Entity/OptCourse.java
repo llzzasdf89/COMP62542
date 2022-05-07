@@ -16,8 +16,8 @@ public class OptCourse extends Course {
         subActivities.remove(course);
     }
 
-    public OptCourse(String courseNum, String name, String department, String courseType, String time) {
-        super(courseNum, name, courseType, time);
+    public OptCourse(String courseNum, String name, String department, String courseType, String day,String startTime,String endTime) {
+        super(courseNum, name, courseType, day,startTime,endTime);
         this.department = department;
         CourseDao courseDao  =new CourseDao();
         courseDao.addCourse(this);

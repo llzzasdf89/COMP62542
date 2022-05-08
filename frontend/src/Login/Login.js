@@ -17,7 +17,7 @@ class Login extends Component {
         const input = this.state.inputValue;
         if(input.length < 1) {
             return Modal.error({
-                content:<div><p>Please input a 1 digit number</p></div>
+                content:<div><p>Please input at least a number</p></div>
             })
         }
         const {navigate} = this
@@ -34,6 +34,9 @@ class Login extends Component {
                 })
             })
         },()=>{
+            return Modal.error({
+                content:"Communication with server error, please check server"
+            })
 
         })
     }

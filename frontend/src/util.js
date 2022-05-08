@@ -16,7 +16,6 @@ const request = (data = null,method = 'GET', url = basedUrl)=>{
         }
         url+= paramsUrl
     }
-    console.log('request url : ', url)
     const xhr = new XMLHttpRequest();
     return new Promise((resolve,reject)=>{
         xhr.onreadystatechange = ()=>{

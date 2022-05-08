@@ -8,7 +8,6 @@ class SupportOffice extends Component{
     //function which receives course and update it according to the query
     updateCourseList = (courseObj,studentIndex,query)=>{
         const {students,coursePool} = this.state
-        console.log(studentIndex)
         if(query === 'add'){
             const params = {
                 addCourse:[students[studentIndex].uniNum, courseObj.courseNum]

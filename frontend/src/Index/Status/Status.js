@@ -1,25 +1,47 @@
 import React,{Component} from 'react'
 import './Status.css'
 import {request} from '../../util'
-import {Card,Button} from 'antd'
+import {Card,Button,Modal} from 'antd'
 import { useOutletContext } from 'react-router-dom'
 const {Meta} = Card
 class Status extends Component{
     handleClick = () =>{
         const {student} = this.state
-        if(student.status === 'unregistered') {
+        if(student.status === 'notRegistered') {
             student.status  = 'pending'
-            const data = {
-                'registration':[student.id]
+            const params = {
+                'registration':[student.uniNum]
             }
-            request(data)
+            request(params).then((resolved)=>{
+                if(resolved === 'true'){ //means the status is changed successfully
+                    return student.status ='pending'
+                }
+                return Modal.error({
+                    content:'The server is busy at the moment, please try again later'
+                })
+            },()=>{
+                return Modal.error({
+                    content:'The server is busy at the moment, please try again later'
+                })
+            })
             this.setState({student})
         }
         else if(student.status === 'pending') {
-            const data = {
-                'pay':[student.id]
+            const params = {
+                'pay':[student.uniNum]
             }
-            request(data)
+            request(params).then((resolved)=>{
+                if(resolved === 'true'){ //means the status is changed successfully
+                    return student.status ='registered'
+                }
+                return Modal.error({
+                    content:'The server is busy at the moment, please try again later'
+                })
+            },(reject)=>{//means the request is in error
+                return Modal.error({
+                    content:'The server is busy at the moment, please try again later'
+                })
+            })
             student.status  = 'registered'
             this.setState({student})
         }
@@ -27,8 +49,11 @@ class Status extends Component{
     constructor(props){
         super(props)
         const {student} = props
-        this.reminder = student.reminder
+        const reminders = student.student.reminders;
         this.state = student
+        //set reminder if there is 
+        if(reminders && reminders.length > 0) this.reminder = reminders[reminders.length -1].content;
+        else this.reminder = ''
     }
     render(){
         const statusTemplate = {
@@ -39,7 +64,7 @@ class Status extends Component{
                 </div>,
                 components:null
             },
-            unregistered:{
+            notRegistered:{
                 title:<div>
                         <span style={{'fontWeight':150}}>Your status is </span> 
                         <span style={{'textDecoration':'underline'}}>Unregistered</span>
@@ -57,7 +82,7 @@ class Status extends Component{
                 </div>,
                 components:
                 <div>
-                    <p>{this.state.student.reminder}</p>
+                    <p>{this.reminder}</p>
                     <p>Now you may want to </p>
                     <Button type='primary' shape='round' onClick={this.handleClick}>pay the fees</Button>
                 </div>

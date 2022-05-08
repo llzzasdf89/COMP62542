@@ -15,7 +15,7 @@ class Home extends Component{
                 Welcome {student.name}
                 <br/> 
                 <div className='homeContainer-body'>
-                Student ID: {student.studentID}
+                Student ID: {student.uniNum}
                 </div>
                 
                 </div>

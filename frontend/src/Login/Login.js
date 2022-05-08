@@ -15,7 +15,7 @@ class Login extends Component {
     handleSubmit = e=>{
         //handle the submission event, validate the input from user
         const input = this.state.inputValue;
-        if(input.length <= 1) {
+        if(input.length < 1) {
             return Modal.error({
                 content:<div><p>Please input a 1 digit number</p></div>
             })
@@ -24,93 +24,38 @@ class Login extends Component {
         const params = {
             login:[input]
         }
-        request(params)
-        navigate('/index',{state:this.state,replace:true})
+        request(params).then((data)=>{
+            data = JSON.parse(data)
+            this.setState({
+                student:data
+            },()=>{
+                navigate('/Index',{
+                    state:this.state
+                })
+            })
+        },()=>{
+
+        })
     }
     switchToAdmission = ()=>{
+        //this function controls the display of admission view
         const {navigate} = this
         const params = {
             Admissioner:null
         }
-        request(params).then((resolveObj)=>{
-            this.setState(({
-                Manager:{
-                    reminder : [
-                        {content:'your deadline is 2022-05-02'},
-                        {content:'your deadline is 2022-05-03'}
-                    ],
-                    newsletter:[{
-                        content:'test1'
-                    }],
-                    students:[
-                        {name:'Richard'},
-                        {name:'Test Student 1'},
-                        {name:'Test Student 2'}
-                    ],
-                }
-            }),()=>{
-                navigate('/Admissioner',{state:this.state})
-            })
-        },(rejectObj)=>{
-            this.setState(({
-                Manager:{
-                    reminder : [
-                        {content:'your deadline is 2022-05-02'},
-                        {content:'your deadline is 2022-05-03'}
-                    ],
-                    newsletter:[{
-                        content:'test1'
-                    }],
-                    students:[
-                        {
-                            name:'Zhi Li',
-                            studentID:'10846881',
-                            course:[
-                                {
-                                    title:'Software Engineering',
-                                    startTime:"2022-05-02T09:00:00",
-                                    endTime:'2022-05-02T11:00:00',
-                                    type:'Mandatory'
-                                },
-                                {
-                                    title:'Querying Data on the Web',
-                                    startTime:'2022-05-04T15:00:00',
-                                    endTime:'2022-05-04T17:00:00',
-                                    type:'Optional',
-                                    department:"Mathematics"
-                                },
-                                {
-                                    title:'Modelling data on the web',
-                                    startTime:'2022-05-05T15:00:00',
-                                    endTime:'2022-05-05T17:00:00',
-                                    type:'Optional Available',
-                                    department:"Computer Science"
-                                }
-                            ],
-                        },
-                        {
-                            name:'WX',
-                            studentID:'1000086',
-                            course:[]
-                        },
-                        {
-                            name:'Test Student 2',
-                            studentID:'10000087',
-                            course:[
-                                {
-                                    title:'Querying Data on the Web',
-                                    startTime:'2022-05-04T15:00:00',
-                                    endTime:'2022-05-04T17:00:00',
-                                    type:'Optional',
-                                    department:"Mathematics"
-                                }
-                            ]
-                        }
-                    ],
-                }
-            }),()=>{
-                navigate('/Admissioner',{state:this.state})
-            })
+        request(params).then((data)=>{
+                data = JSON.parse(data) //request sucess, receive data from server
+                this.setState({
+                    Manager:data
+                },()=>{
+                    navigate('/Admissioner',{
+                        state:this.state
+                    })
+                })
+        },()=>{//request failed , directly return
+           return Modal.error({
+               content:"Communication with server error, please check server"
+           })
         })
 
     }

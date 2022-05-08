@@ -1,68 +1,75 @@
 import React,{Component} from 'react'
-import {List, Card,Button} from 'antd'
+import {List, Card,Button, Modal} from 'antd'
 import CourseComponent from './CourseComponent/CourseComponent'
 import {useOutletContext} from 'react-router-dom'
 import './SupportOffice.css'
 import {request} from '../../util'
-//mock data
-const course = [
-    {
-        title:'Software Engineering',
-        startTime:"2022-05-02T09:00:00",
-        endTime:'2022-05-02T11:00:00',
-        type:'Mandatory'
-    },
-    {
-        title:'Querying Data on the Web',
-        startTime:'2022-05-04T15:00:00',
-        endTime:'2022-05-04T17:00:00',
-        type:'Optional',
-        department:"Mathematics"
-    },
-    {
-        title:'Modelling data on the web',
-        startTime:'2022-05-05T15:00:00',
-        endTime:'2022-05-05T17:00:00',
-        type:'Optional Available',
-        department:"Computer Science"
-    },
-    {
-        title:'System Governance',
-        startTime:'2022-05-05T15:00:00',
-        endTime:'2022-05-05T17:00:00',
-        type:'Mandatory'
-    },
-    {
-        title:'Artificial Intelligence',
-        startTime:'2022-05-05T15:00:00',
-        endTime:'2022-05-05T17:00:00',
-        type:'Optional',
-        department:'Computer science'
-    }
-]
-
 class SupportOffice extends Component{
     //function which receives course and update it according to the query
     updateCourseList = (courseObj,studentIndex,query)=>{
-        const {students} = this.state
+        const {students,coursePool} = this.state
         if(query === 'add'){
-            students[studentIndex].course.push(courseObj)
+            const params = {
+                addCourse:[students[studentIndex].uniNum, courseObj.courseNum]
+            }
+            request(params).then(resolve=>{
+                
+                if(resolve === 'true'){
+                    students[studentIndex].courses.push(courseObj)
+                    Modal.success({
+                        content:'add course success'
+                    })
+                    return this.setState({
+                        students,
+                        coursePool
+                    })
+                }
+                Modal.error({
+                    content:"add course failed, please check the server status"
+                })
+            },reject=>{
+                Modal.error({
+                    content:"add course failed, please check the server status"
+                })
+            })
         }
         else if (query === 'delete'){
-            students[studentIndex].course.forEach(
-                (item,index) =>{
-                    if(item.title === courseObj.title) return students[studentIndex].course.splice(index,1)
+            const params = {
+                removeCourse:[students[studentIndex].uniNum,courseObj.courseNum]
+            }
+            request(params).then(resolve=>{
+                if(resolve === 'true'){
+                    students[studentIndex].courses.forEach(
+                        (item,index) =>{
+                            if(item.courseNum === courseObj.courseNum) students[studentIndex].courses.splice(index,1)
+                        }
+                    ) //use for Each to traverse all the course list, to find the one to be removed and remove it
+                    Modal.success({
+                        content:'Remove course sucess'
+                    })
+                    return this.setState({
+                        students
+                    })//update UI
                 }
-            ) //use for Each to traverse all the course list, to find the one to be removed and remove it
+                return Modal.error({
+                    content:"Remove course failed, please check the stauts of the server"
+                })
+            },(reject)=>{
+                return Modal.error({
+                    content:"Remove course failed, please check the stauts of the server"
+                })
+            })
         }
-        this.setState({
-            students
-        })//update UI
     }
     //Control the subpage's display
     switchView = index=>{
         //studentView is a boolean variable to indicate which component to display
-        let {studentView} = this.state
+        let {studentView,students} = this.state
+        if(students[index].status != 'registered'){
+            return Modal.error({
+                content:"this student is not registered, so we could not edit courses"
+            })
+        }
         studentView = !studentView
         this.setState({
             studentView,
@@ -72,9 +79,9 @@ class SupportOffice extends Component{
     constructor(props){
         super(props)
         const {Manager} = props.params
-        const {students} = Manager
+        const {students,courses} = Manager
         this.state = {
-            coursePool:course,
+            coursePool:courses,
             students,
             studentView:false,
             studentIndex:0,
@@ -109,4 +116,3 @@ class SupportOffice extends Component{
 }
 
 export default ()=><SupportOffice params = {useOutletContext()}></SupportOffice>
-

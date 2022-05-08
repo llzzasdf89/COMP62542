@@ -3,7 +3,7 @@
  * notice this Index.js is not the same file with the index.js in src/
  */
 import React, {Component } from 'react'
-import {Layout,Menu, Breadcrumb } from 'antd';
+import {Layout,Menu, Breadcrumb, Modal } from 'antd';
 import {Link,useLocation,Outlet, Navigate} from 'react-router-dom';
 import './Index.css'
 const {Header,Content,Footer} = Layout
@@ -12,55 +12,6 @@ const shouldRedirect = (pathname)=>{
     const redirectRules = ['/index','/index/','/admissioner','/admissioner/'] 
     //generally we only need to redirect the page when user access '/index' page
     return redirectRules.includes(pathname.toLowerCase())
-}
-const defaultStudent = {
-    name:'RichardZhiLi',
-    studentID:'1000086',
-    status:'unregistered',
-    course:[
-        {
-            title:'Software Engineering',
-            startTime:"2022-05-02T09:00:00",
-            endTime:'2022-05-02T11:00:00',
-            type:'Mandatory'
-        },
-        {
-            title:'Querying Data on the Web',
-            startTime:'2022-05-04T15:00:00',
-            endTime:'2022-05-04T17:00:00',
-            type:'Optional',
-            department:"Mathematics"
-        },
-        {
-            title:'Modelling data on the web',
-            startTime:'2022-05-05T15:00:00',
-            endTime:'2022-05-05T17:00:00',
-            type:'Optional Available',
-            department:"Computer Science"
-        }
-    ],
-    activities:[
-        {
-            id:1,
-            type:'Tutorial',
-            startTime:"2022-05-02T09:00:00",
-            endTime:'2022-05-02T11:00:00',
-            course:'Software Engineering'
-        },
-        {
-            id:2,
-            type:'Supervision Meeting',
-            startTime:"2022-05-02T09:00:00",
-            endTime:'2022-05-02T11:00:00',
-            course:'Querying data on the Web'
-        }
-    ],
-    newsletter:[{
-            title:'1111',
-            content:'HHHHH',
-            subscribed:false
-    }],
-    reminder:'Your deadline of payment is 2022-05-09, please notice'
 }
 class Index extends Component{
     constructor(props){
@@ -76,11 +27,13 @@ class Index extends Component{
             {label:<Link to='/Index/Status'>Status</Link>, key:'Status',path:'/Index/Status'},
             {label:<Link to='/Index/Timetable'>Timetable</Link>,key:'Timetable',path:'/Index/Timetable'},
             {label:<Link to='/Index/Course'>Course</Link>,key:'Course',path:'/Index/Course'},
-            {label:<Link to='/Index/Newsletter'>Newsletter</Link>,key:'Newsletter',path:'/Index/Newsletter'}
+            {label:<Link to='/Index/Newsletter'>Newsletter</Link>,key:'Newsletter',path:'/Index/Newsletter'},
+            {label:<Link to='/'>Log out</Link>,key:'Logout'}
         ]:[
             {label:<Link to='/Admissioner/AdmissionOffice'>AdmissionOffice</Link>,key:'AdmissionOffice', path:'/Admissioner/AdmissionOffice'},
             {label:<Link to='/Admissioner/SupportOffice'>SupportOffice</Link>, key:'SupportOffice',path:'/Admissioner/SupportOffice'},
             {label:<Link to='/Admissioner/StudentUnion'>StudentUnion</Link>,key:'StudentUnion',path:'/Admissioner/StudentUnion'},
+            {label:<Link to='/'>Log out</Link>,key:'Logout'}
         ]
         this.menuItem = menuItem
         const routeNameMap = new Map()
@@ -89,10 +42,15 @@ class Index extends Component{
         *  For example: when the route is /index, our navigation shows /Home */
         menuItem.forEach((item)=>routeNameMap.set(item.path,'/' + item.key))
         this.routeNameMap = routeNameMap
-        let student = defaultStudent;//default value is defaultStudent, preventing the value is empty
-        let Manager = null
-        if(location.state.student) student= location.state.student
-        if(location.state.Manager) Manager = location.state.Manager
+        if(!location.state.student && !location.state.Manager){
+            return Modal.error({
+                content:'Fetch data error, please check the status of server'
+            })
+        }
+        //student and Manager are global variables which stores important information from contorller,
+        //therefore if these variables are not obtained successfully, end the page
+        const student = location.state.student || null;
+        const Manager = location.state.Manager || null;
         this.shouldRedirect = shouldRedirect(pathname)
         this.state = {student,Manager} //bind it to the state object of React
         this.currentRoute =routeNameMap.get(pathname)

@@ -3,8 +3,8 @@ COMP62542Project is a Java group project of COMP62542 in the University of Manch
 Group member includes :<br/>
 Jiong Gao<br/>
 Xiaoyu Shi<br/>
-Zhi Li
-<br/>
+Zhi Li<br/>
+Group number : 8 <br>
 Established on 15. April. 2022, the project aims to establish a student registeration system with multiple design patterns. <br/>
 The patterns involved includes : 
 1. Strategy
@@ -66,7 +66,7 @@ waiting for Zhi Li's authentication.
 ```
 
 ### compile
-frontend:<br/>
+For frontend:<br/>
 Make sure nodejs 13 or higher is prepared.<br/>
 ```
 cd frontend;
@@ -75,29 +75,56 @@ npm run start;
 Browser visit http://localhost:3000/
 ```
 <br/>
-backend:
+For backend:
 <br/>
-Make sure JVM 10.0 or higher is prepared.
+Make sure JVM 10.0 or higher is prepared.<br/>
+Make sure MySQL is installed
 
 ```
-cd backend;
-javac src/*.java -d ./StudentSys;
-cd StudentSys;
-java Run;
+Import database:
+mysql -u username -p student_system < student_system.sql;
+
+Start MySQL service:
+mysql.server start;
+
+```
+
+```
+Compile java source code:
+In the 'backend/' directory:
+javac Entity/*.java Dao/*.java Service/*.java -cp libs/json-lib-2.1-jdk15.jar;
+
+Run:
+java -cp .:libs/mysql-connector-java-8.0.29.jar Entity.Run
 ```
 
 ### Paths
 
 ```
 .
-├── backend         //contains all the documents relevant to backend
-│   ├── designdoc   //design patterns documents
-│   └── src         //source code of backend
-└── frontend        //contains all the documents relevant to frontend
-    ├── public      //static files of frontend
-    └── src         //source code of frontend
-        └── Login   //Login page
-
+├── backend //all the development tools, source code related to backend
+│   ├── database //contains mysql database dump files 
+│   ├── designdoc //including some communication documents among developers, such as APIs or pattern design guide.
+│   └── src  //source code of backend
+│       ├── Dao //source code of Access database from Java to MySQL
+│       ├── Entity //source code of design patterns,including 
+│       ├── Service //including source code of APIs.
+│       └── libs //dependencies, contains jar files 
+└── frontend //all the development tools, source code of frontend
+    ├── public  //React static files 
+    └── src //source code of frontend
+        ├── Admissioner //Admission page, including its subpages 
+        │   ├── AdmissionOffice
+        │   ├── StudentUnion
+        │   └── SupportOffice
+        │       └── CourseComponent
+        ├── Index //Student Page,including its subpages
+        │   ├── Course 
+        │   ├── Home
+        │   ├── Newsletter
+        │   ├── Status
+        │   └── Timetable
+        └── Login //Login page
 
 ```
 ### Other issues:
